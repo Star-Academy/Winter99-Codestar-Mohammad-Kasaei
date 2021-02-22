@@ -1,7 +1,4 @@
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 public class InvertedIndex {
     private final Tokenizer tokenizer;
@@ -14,17 +11,17 @@ public class InvertedIndex {
 
     public void addDocument(String docID, String content) {
         Map<Integer, String> tokens = tokenizer.getTokens(content);
-        if (tokens.size() > 0 && !this.data.containsKey(docID)) {
-            data.put(docID, new HashMap<>());
-        }
-        Map<String, Set<Integer>> docRecord = data.get(docID);
         for (Map.Entry<Integer, String> tokenPair : tokens.entrySet()) {
-            int index = tokenPair.getKey();
-            String tokenValue = tokenPair.getValue();
-            if (!docRecord.containsKey(tokenValue)) {
-                docRecord.put(tokenValue, new TreeSet<>());
+            final int index = tokenPair.getKey();
+            final String tokenValue = tokenPair.getValue();
+            if (!data.containsKey(tokenValue)) {
+                data.put(tokenValue, new TreeMap<>());
             }
-            docRecord.get(tokenValue).add(index);
+            Map<String, Set<Integer>> tokenObject = data.get(tokenValue);
+            if (!tokenObject.containsKey(docID)) {
+                tokenObject.put(docID, new TreeSet<>());
+            }
+            tokenObject.get(docID).add(index);
         }
     }
 
@@ -33,5 +30,10 @@ public class InvertedIndex {
             addDocument(entry.getKey(), entry.getValue());
         }
         System.out.println(data);
+    }
+
+    public Map<String, Set<Integer>> query(String q) {
+        q = tokenizer.normalizeToken(q);
+        return data.get(q);
     }
 }
