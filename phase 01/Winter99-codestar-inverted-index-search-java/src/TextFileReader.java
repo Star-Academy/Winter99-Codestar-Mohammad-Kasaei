@@ -6,7 +6,8 @@ public class TextFileReader {
 
     /**
      * Reads all the files in the folder as text
-     * @param folderPath
+     *
+     * @param folderPath source of input data
      * @return map (file name) ==>> (file content)
      */
     public Map<String, String> readAllFileInFolder(String folderPath) {
@@ -16,10 +17,9 @@ public class TextFileReader {
         }
         return result;
     }
-    
+
     /**
-     * 
-     * @param folderPath
+     * @param folderPath source of input data
      * @return list of all files stored in the folder
      */
     private File[] listOfFileInFolder(String folderPath) {
@@ -30,6 +30,7 @@ public class TextFileReader {
 
     /**
      * Read the file given as parameter
+     *
      * @param file input file
      * @return content of the file
      */
