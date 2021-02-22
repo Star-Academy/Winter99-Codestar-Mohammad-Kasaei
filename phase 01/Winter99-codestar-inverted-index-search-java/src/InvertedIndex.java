@@ -2,7 +2,7 @@ import java.util.*;
 
 public class InvertedIndex {
     private final Tokenizer tokenizer;
-    private final Map<String, Map<String, Set<Integer>>> data;
+    private final Map<String, Set<String>> data;
 
     public InvertedIndex() {
         tokenizer = new Tokenizer();
@@ -10,18 +10,12 @@ public class InvertedIndex {
     }
 
     public void addDocument(String docID, String content) {
-        Map<Integer, String> tokens = tokenizer.getTokens(content);
-        for (Map.Entry<Integer, String> tokenPair : tokens.entrySet()) {
-            final int index = tokenPair.getKey();
-            final String tokenValue = tokenPair.getValue();
+        String[] tokens = tokenizer.getTokens(content);
+        for (String tokenValue : tokens) {
             if (!data.containsKey(tokenValue)) {
-                data.put(tokenValue, new TreeMap<>());
+                data.put(tokenValue, new HashSet<>());
             }
-            Map<String, Set<Integer>> tokenObject = data.get(tokenValue);
-            if (!tokenObject.containsKey(docID)) {
-                tokenObject.put(docID, new TreeSet<>());
-            }
-            tokenObject.get(docID).add(index);
+            data.get(tokenValue).add(docID);
         }
     }
 
@@ -29,11 +23,10 @@ public class InvertedIndex {
         for (Map.Entry<String, String> entry : docs.entrySet()) {
             addDocument(entry.getKey(), entry.getValue());
         }
-        System.out.println(data);
     }
 
-    public Map<String, Set<Integer>> query(String q) {
-        q = tokenizer.normalizeToken(q);
-        return data.get(q);
+    public Set<String> query(String word) {
+        word = tokenizer.normalizeToken(word);
+        return data.get(word);
     }
 }
