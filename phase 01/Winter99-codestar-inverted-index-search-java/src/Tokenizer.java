@@ -10,8 +10,7 @@ public class Tokenizer {
         return word;
     }
 
-
-    public String normalizeContent(String content) {
+    private String normalizeContent(String content) {
         content = content.toLowerCase();
         return content;
     }
