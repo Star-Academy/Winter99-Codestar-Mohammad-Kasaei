@@ -1,5 +1,7 @@
 public class Tokenizer {
 
+    private static final String INVALID_TOKENS_REGEX = "\\W+";
+
     /**
      * Extract content of the file to tokens
      *
@@ -8,17 +10,18 @@ public class Tokenizer {
      */
     public String[] getTokens(String content) {
         content = normalizeContent(content);
-        return content.split("\\W+");
+        return content.split(INVALID_TOKENS_REGEX);
     }
 
     /**
-     * Converts token to its normal form (lower case chars)
+     * Converts token to its normal form (lower case chars and also remove non alphanumerics)
      *
      * @param word input string
      * @return normalized valid token
      */
     public String normalizeToken(String word) {
         word = word.toLowerCase();
+        word = word.replaceAll(INVALID_TOKENS_REGEX, "");
         return word;
     }
 
