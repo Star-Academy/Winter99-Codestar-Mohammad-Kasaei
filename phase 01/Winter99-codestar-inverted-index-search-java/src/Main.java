@@ -9,6 +9,6 @@ public class Main {
         Map<String, String> docs = reader.readAllFileInFolder(path);
         InvertedIndex invertedIndex = new InvertedIndex();
         invertedIndex.addDocuments(docs);
-        System.out.println("Simple word is in : " + invertedIndex.query("simple"));
+        System.out.println("Simple word is in : " + invertedIndex.query("TWO"));
     }
 }
