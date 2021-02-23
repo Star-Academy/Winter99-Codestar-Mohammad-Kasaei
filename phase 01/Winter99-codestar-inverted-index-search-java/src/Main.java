@@ -6,9 +6,14 @@ public class Main {
 //        final String path = "SimpleData";
 
         TextFileReader reader = new TextFileReader();
+        Tokenizer tokenizer = new Tokenizer();
+        InvertedIndex invertedIndex = new InvertedIndex(tokenizer);
+
         Map<String, String> docs = reader.readAllFileInFolder(path);
-        InvertedIndex invertedIndex = new InvertedIndex();
         invertedIndex.addDocuments(docs);
-        System.out.println("Simple word is in : " + invertedIndex.query("TWO"));
+
+        QueryEngine queryEngine = new QueryEngine(invertedIndex);
+
+        System.out.println("Simple word is in : " + queryEngine.query("TWO"));
     }
 }
