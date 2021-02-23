@@ -1,5 +1,6 @@
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 public class QueryEngine {
     private final InvertedIndex index;
@@ -69,6 +70,10 @@ public class QueryEngine {
                     break;
             }
         }
-        return result;
+        if (result == null) {
+            return new TreeSet<>();
+        } else {
+            return result;
+        }
     }
 }
