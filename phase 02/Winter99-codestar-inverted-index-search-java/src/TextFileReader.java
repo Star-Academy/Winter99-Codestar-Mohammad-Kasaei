@@ -7,12 +7,6 @@ import java.util.Map;
 
 public class TextFileReader {
 
-    /**
-     * Reads all the files in the folder as text
-     *
-     * @param folderPath source of input data
-     * @return map (file name) ==>> (file content)
-     */
     public Map<Document, String> readAllFileInFolder(String folderPath) {
         Map<Document, String> result = new HashMap<>();
         for (File f : listOfFileInFolder(folderPath)) {
@@ -21,22 +15,10 @@ public class TextFileReader {
         return result;
     }
 
-    /**
-     * @param folderPath source of input data
-     * @return list of all files stored in the folder
-     */
     private File[] listOfFileInFolder(String folderPath) {
         File folder = new File(folderPath);
-        // todo: filter files
         return folder.listFiles();
     }
-
-    /**
-     * Read the file given as parameter
-     *
-     * @param file input file
-     * @return content of the file
-     */
 
     public String readTextFile(File file) {
         FileReader fileReader;
