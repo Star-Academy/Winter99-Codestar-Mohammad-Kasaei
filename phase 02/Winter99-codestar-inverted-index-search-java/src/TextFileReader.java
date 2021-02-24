@@ -36,7 +36,7 @@ public class TextFileReader {
      */
 
     public String readTextFile(File file) {
-        FileReader fileReader = null;
+        FileReader fileReader;
         BufferedReader reader = null;
         try {
             fileReader = new FileReader(file);
