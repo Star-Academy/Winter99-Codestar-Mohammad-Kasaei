@@ -4,15 +4,33 @@ import java.util.Scanner;
 
 public class Main {
 
+    /**
+     * The main object to get result of the queries from
+     */
     private static QueryEngine queryEngine;
+    /**
+     * Path of source files to read the docs from
+     */
     private static final String path = "EnglishData";
+    /**
+     * Shows the end of input in list of words to query
+     */
     private static final String TERMINATION_STRING = "---";
 
+    /**
+     * Starting point of the program
+     *
+     * @param args system arguments
+     */
     public static void main(String[] args) {
         initializeEngine();
         startCLI();
     }
 
+    /**
+     * This method starts the Command line interface to interact with the user
+     * prints some messages and read responses
+     */
     private static void startCLI() {
         final Scanner scanner = new Scanner(System.in);
         boolean terminate = false;
@@ -25,6 +43,13 @@ public class Main {
         }
     }
 
+
+    /**
+     * Ask the users whether it was the last query or no
+     *
+     * @param scanner scanner for the input stream to the user
+     * @return true if the program must terminate and no more query is asked otherwise false
+     */
     private static boolean askToTerminate(Scanner scanner) {
         while (true) {
             System.out.print("\nTerminate (y) or Continue query (n) : ");
@@ -39,6 +64,12 @@ public class Main {
         }
     }
 
+    /**
+     * Read a list word until {@code TERMINATION_STRING} from the user input terminal
+     *
+     * @param scanner scanner for the input stream to the user
+     * @return list of all words users requested to query ( not including the stop phrase )
+     */
     private static ArrayList<String> getListOfWords(Scanner scanner) {
         final ArrayList<String> words = new ArrayList<>();
         while (true) {
@@ -51,6 +82,10 @@ public class Main {
         return words;
     }
 
+    /**
+     * Basic initialization for the inverted index class and query engine
+     * to perform for the rest of the program
+     */
     private static void initializeEngine() {
         final TextFileReader reader = new TextFileReader();
         final InvertedIndex invertedIndex = new InvertedIndex();
