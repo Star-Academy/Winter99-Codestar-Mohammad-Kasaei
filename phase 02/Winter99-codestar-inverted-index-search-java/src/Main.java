@@ -3,45 +3,62 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
+
+    private static QueryEngine queryEngine;
+    private static final String path = "EnglishData";
+    private static final String TERMINATION_STRING = "---";
+
     public static void main(String[] args) {
-        final String path = "EnglishData";
-//        final String path = "SimpleData";
+        initializeEngine();
+        startCLI();
+    }
 
-        TextFileReader reader = new TextFileReader();
-        Tokenizer tokenizer = new Tokenizer();
-        InvertedIndex invertedIndex = new InvertedIndex(tokenizer);
-
-        Map<String, String> docs = reader.readAllFileInFolder(path);
-        invertedIndex.addDocuments(docs);
-
-        QueryEngine queryEngine = new QueryEngine(invertedIndex);
-
-        Scanner scanner = new Scanner(System.in);
-        ArrayList<String> words = new ArrayList<>();
+    private static void startCLI() {
+        final Scanner scanner = new Scanner(System.in);
         boolean terminate = false;
 
         while (!terminate) {
-            System.out.println("Enter list of words to find in sample english database (finish input by --- (3 dash))");
-            while (true) {
-                String input = scanner.next();
-                if (input.equals("---")) {
-                    System.out.println(queryEngine.query(words));
-                    break;
-                }
-                words.add(input);
-            }
-            while (true) {
-                System.out.print("\nTerminate (y) or Continue query (n) : ");
-                String input = scanner.next().toLowerCase();
-                if (input.equals("y")) {
-                    terminate = true;
-                    break;
-                } else if (input.equals("n")) {
-                    break;
-                } else {
-                    System.out.println("No choice selected.");
-                }
+            System.out.printf("Enter list of words to find in sample english database (finish input by %s (3 dash))\n", TERMINATION_STRING);
+            ArrayList<String> listOfWords = getListOfWords(scanner);
+            System.out.println(queryEngine.query(listOfWords));
+            terminate = askToTerminate(scanner);
+        }
+    }
+
+    private static boolean askToTerminate(Scanner scanner) {
+        while (true) {
+            System.out.print("\nTerminate (y) or Continue query (n) : ");
+            String input = scanner.next().toLowerCase();
+            if (input.equals("y")) {
+                return true;
+            } else if (input.equals("n")) {
+                return false;
+            } else {
+                System.out.println("No choice selected.");
             }
         }
+    }
+
+    private static ArrayList<String> getListOfWords(Scanner scanner) {
+        final ArrayList<String> words = new ArrayList<>();
+        while (true) {
+            String input = scanner.next();
+            if (input.equals(TERMINATION_STRING)) {
+                break;
+            }
+            words.add(input);
+        }
+        return words;
+    }
+
+    private static void initializeEngine() {
+        final TextFileReader reader = new TextFileReader();
+        final Tokenizer tokenizer = new Tokenizer();
+        final InvertedIndex invertedIndex = new InvertedIndex(tokenizer);
+
+        final Map<String, String> docs = reader.readAllFileInFolder(path);
+        invertedIndex.addDocuments(docs);
+
+        queryEngine = new QueryEngine(invertedIndex);
     }
 }
