@@ -10,6 +10,10 @@ public class QueryEngine {
         this.index = index;
     }
 
+    /**
+     * @param words list of words to query (words can have + or - tag prefixes or no prefix)
+     * @return the result of advanced search mentioned in the docs
+     */
     public Set<Document> query(ArrayList<String> words) {
         HashSet<Token> plusWords = new HashSet<>();
         HashSet<Token> noSignWords = new HashSet<>();
@@ -30,6 +34,15 @@ public class QueryEngine {
     }
 
 
+    /**
+     *
+     * Performs advanced query mentioned in the project documents
+     *
+     * @param plusWords   list of words with + tag
+     * @param noSignWords list of words with no sign
+     * @param minusWords list of words with - tag
+     * @return the result is the set of documents the advanced search mechanism as mentioned in phase 1 documentations
+     */
     public Set<Document> query(Set<Token> plusWords,
                                Set<Token> noSignWords,
                                Set<Token> minusWords) {
@@ -52,6 +65,10 @@ public class QueryEngine {
     }
 
 
+    /**
+     * @param tokens list of tokens
+     * @return set of all docs containing at least one of the tokens in <code>token</code>
+     */
     private Set<Document> getUnionOfDocsContainingWords(Set<Token> tokens) {
         final Set<Document> result = new HashSet<>();
         for (Token token : tokens) {
@@ -60,6 +77,10 @@ public class QueryEngine {
         return result;
     }
 
+    /**
+     * @param tokens set of tokens
+     * @return set of all documents containing every token in {@code tokens}
+     */
     private Set<Document> getIntersectionOfDocsContainingWords(Set<Token> tokens) {
         Set<Document> result = new TreeSet<>();
         for (Token token : tokens) {
