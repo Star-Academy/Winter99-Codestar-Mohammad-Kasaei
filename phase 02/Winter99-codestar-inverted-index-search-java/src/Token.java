@@ -4,14 +4,26 @@ import java.util.Objects;
 public class Token {
     private static final String INVALID_TOKENS_REGEX = "\\W+";
 
+    /**
+     * The main string of token
+     */
     private final String value;
 
+    /**
+     * Create the token and validates the characters
+     *
+     * @param value source string to create the token based on
+     */
     public Token(String value) {
         value = value.toLowerCase(Locale.ROOT);
         value = value.replaceAll(INVALID_TOKENS_REGEX, "");
         this.value = value;
     }
 
+    /**
+     * @param content everything in the document to be converted to tokens
+     * @return array of tokens in the {@code content}
+     */
     public static Token[] textToTokens(String content) {
         content = normalizeContent(content);
         String[] words = content.split(INVALID_TOKENS_REGEX);
@@ -22,6 +34,12 @@ public class Token {
         return tokens;
     }
 
+    /**
+     * Converts all the file to lower case
+     *
+     * @param content everything in the file to be reverse indexed
+     * @return normalized content of the file
+     */
     private static String normalizeContent(String content) {
         return content.toLowerCase();
     }
