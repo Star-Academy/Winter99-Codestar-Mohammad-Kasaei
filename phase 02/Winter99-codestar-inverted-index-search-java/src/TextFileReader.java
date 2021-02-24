@@ -19,6 +19,10 @@ public class TextFileReader {
         return result;
     }
 
+    /**
+     * @param folderPath source folder
+     * @return all files in that folder
+     */
     private File[] listOfFileInFolder(String folderPath) {
         File folder = new File(folderPath);
         return folder.listFiles();
