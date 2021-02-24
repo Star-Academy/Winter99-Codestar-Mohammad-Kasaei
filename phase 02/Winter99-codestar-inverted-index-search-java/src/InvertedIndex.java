@@ -4,29 +4,29 @@ import java.util.Map;
 import java.util.Set;
 
 public class InvertedIndex {
-    private final Map<Token, Set<String>> data;
+    private final Map<Token, Set<Document>> data;
 
     public InvertedIndex() {
         data = new HashMap<>();
     }
 
-    public void addDocument(String docID, String content) {
+    public void addDocument(Document doc, String content) {
         Token[] tokens = Token.textToTokens(content);
         for (Token t : tokens) {
             if (!data.containsKey(t)) {
                 data.put(t, new HashSet<>());
             }
-            data.get(t).add(docID);
+            data.get(t).add(doc);
         }
     }
 
-    public void addDocuments(Map<String, String> docs) {
-        for (Map.Entry<String, String> entry : docs.entrySet()) {
+    public void addDocuments(Map<Document, String> docs) {
+        for (Map.Entry<Document, String> entry : docs.entrySet()) {
             addDocument(entry.getKey(), entry.getValue());
         }
     }
 
-    public Set<String> query(Token token) {
+    public Set<Document> query(Token token) {
         return data.getOrDefault(token, new HashSet<>());
     }
 }

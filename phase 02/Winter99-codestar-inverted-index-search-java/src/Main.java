@@ -18,7 +18,7 @@ public class Main {
         boolean terminate = false;
 
         while (!terminate) {
-            System.out.printf("Enter list of words to find in sample english database (finish input by %s (3 dash))\n", TERMINATION_STRING);
+            System.out.printf("Enter list of words to find in sample english database (finish input by %s (3 dashes))\n", TERMINATION_STRING);
             ArrayList<String> listOfWords = getListOfWords(scanner);
             System.out.println(queryEngine.query(listOfWords));
             terminate = askToTerminate(scanner);
@@ -55,7 +55,7 @@ public class Main {
         final TextFileReader reader = new TextFileReader();
         final InvertedIndex invertedIndex = new InvertedIndex();
 
-        final Map<String, String> docs = reader.readAllFileInFolder(path);
+        final Map<Document, String> docs = reader.readAllFileInFolder(path);
         invertedIndex.addDocuments(docs);
 
         queryEngine = new QueryEngine(invertedIndex);

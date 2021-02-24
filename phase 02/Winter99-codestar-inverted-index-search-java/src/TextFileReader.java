@@ -1,4 +1,7 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +13,10 @@ public class TextFileReader {
      * @param folderPath source of input data
      * @return map (file name) ==>> (file content)
      */
-    public Map<String, String> readAllFileInFolder(String folderPath) {
-        Map<String, String> result = new HashMap<>();
+    public Map<Document, String> readAllFileInFolder(String folderPath) {
+        Map<Document, String> result = new HashMap<>();
         for (File f : listOfFileInFolder(folderPath)) {
-            result.put(f.getName(), readTextFile(f));
+            result.put(new Document(f.getPath(), f.getName()), readTextFile(f));
         }
         return result;
     }

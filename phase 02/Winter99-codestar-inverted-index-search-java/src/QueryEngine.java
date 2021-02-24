@@ -10,7 +10,7 @@ public class QueryEngine {
         this.index = index;
     }
 
-    public Set<String> query(ArrayList<String> words) {
+    public Set<Document> query(ArrayList<String> words) {
         HashSet<Token> plusWords = new HashSet<>();
         HashSet<Token> noSignWords = new HashSet<>();
         HashSet<Token> minusWords = new HashSet<>();
@@ -30,13 +30,13 @@ public class QueryEngine {
     }
 
 
-    public Set<String> query(Set<Token> plusWords,
-                             Set<Token> noSignWords,
-                             Set<Token> minusWords) {
-        final Set<String> plusDocs = getUnionOfDocsContainingWords(plusWords);
-        final Set<String> noSignDocs = getIntersectionOfDocsContainingWords(noSignWords);
-        final Set<String> minusDocs = getUnionOfDocsContainingWords(minusWords);
-        Set<String> ansDocs = new HashSet<>();
+    public Set<Document> query(Set<Token> plusWords,
+                               Set<Token> noSignWords,
+                               Set<Token> minusWords) {
+        final Set<Document> plusDocs = getUnionOfDocsContainingWords(plusWords);
+        final Set<Document> noSignDocs = getIntersectionOfDocsContainingWords(noSignWords);
+        final Set<Document> minusDocs = getUnionOfDocsContainingWords(minusWords);
+        Set<Document> ansDocs = new HashSet<>();
         if (plusDocs.isEmpty()) {
             ansDocs.addAll(noSignDocs);
         } else if (noSignDocs.isEmpty()) {
@@ -52,29 +52,25 @@ public class QueryEngine {
     }
 
 
-    private Set<String> getUnionOfDocsContainingWords(Set<Token> tokens) {
-        final Set<String> result = new HashSet<>();
+    private Set<Document> getUnionOfDocsContainingWords(Set<Token> tokens) {
+        final Set<Document> result = new HashSet<>();
         for (Token token : tokens) {
             result.addAll(index.query(token));
         }
         return result;
     }
 
-    private Set<String> getIntersectionOfDocsContainingWords(Set<Token> tokens) {
-        Set<String> result = null;
+    private Set<Document> getIntersectionOfDocsContainingWords(Set<Token> tokens) {
+        Set<Document> result = new TreeSet<>();
         for (Token token : tokens) {
-            if (result == null) {
-                result = new HashSet<>(index.query(token));
+            if (result.isEmpty()) {
+                result.addAll(index.query(token));
             } else {
                 result.retainAll(index.query(token));
                 if (result.isEmpty())
                     break;
             }
         }
-        if (result == null) {
-            return new TreeSet<>();
-        } else {
-            return result;
-        }
+        return result;
     }
 }
