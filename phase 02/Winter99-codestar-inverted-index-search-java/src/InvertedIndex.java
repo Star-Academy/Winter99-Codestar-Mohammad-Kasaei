@@ -4,21 +4,19 @@ import java.util.Map;
 import java.util.Set;
 
 public class InvertedIndex {
-    private final Tokenizer tokenizer;
-    private final Map<String, Set<String>> data;
+    private final Map<Token, Set<String>> data;
 
-    public InvertedIndex(Tokenizer tokenizer) {
-        this.tokenizer = tokenizer;
+    public InvertedIndex() {
         data = new HashMap<>();
     }
 
     public void addDocument(String docID, String content) {
-        String[] tokens = tokenizer.getTokens(content);
-        for (String tokenValue : tokens) {
-            if (!data.containsKey(tokenValue)) {
-                data.put(tokenValue, new HashSet<>());
+        Token[] tokens = Token.textToTokens(content);
+        for (Token t : tokens) {
+            if (!data.containsKey(t)) {
+                data.put(t, new HashSet<>());
             }
-            data.get(tokenValue).add(docID);
+            data.get(t).add(docID);
         }
     }
 
@@ -28,7 +26,7 @@ public class InvertedIndex {
         }
     }
 
-    public Set<String> query(String str) {
-        return data.getOrDefault(tokenizer.normalizeToken(str), new HashSet<>());
+    public Set<String> query(Token token) {
+        return data.getOrDefault(token, new HashSet<>());
     }
 }

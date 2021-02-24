@@ -53,8 +53,7 @@ public class Main {
 
     private static void initializeEngine() {
         final TextFileReader reader = new TextFileReader();
-        final Tokenizer tokenizer = new Tokenizer();
-        final InvertedIndex invertedIndex = new InvertedIndex(tokenizer);
+        final InvertedIndex invertedIndex = new InvertedIndex();
 
         final Map<String, String> docs = reader.readAllFileInFolder(path);
         invertedIndex.addDocuments(docs);
