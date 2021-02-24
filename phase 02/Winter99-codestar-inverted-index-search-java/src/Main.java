@@ -41,6 +41,7 @@ public class Main {
             System.out.println(queryEngine.query(listOfWords));
             terminate = askToTerminate(scanner);
         }
+        scanner.close();
     }
 
 
