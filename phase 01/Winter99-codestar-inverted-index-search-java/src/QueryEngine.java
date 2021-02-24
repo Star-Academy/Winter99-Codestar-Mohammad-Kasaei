@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
@@ -9,7 +10,7 @@ public class QueryEngine {
         this.index = index;
     }
 
-    public Set<String> query(String... words) {
+    public Set<String> query(ArrayList<String> words) {
         HashSet<String> plusWords = new HashSet<>();
         HashSet<String> noSignWords = new HashSet<>();
         HashSet<String> minusWords = new HashSet<>();
