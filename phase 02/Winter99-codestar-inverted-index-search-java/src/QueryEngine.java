@@ -14,7 +14,7 @@ public class QueryEngine {
      * @param words list of words to query (words can have + or - tag prefixes or no prefix)
      * @return the result of advanced search mentioned in the docs
      */
-    public Set<Document> query(ArrayList<String> words) {
+    public Set<Document> advancedSearch(ArrayList<String> words) {
         HashSet<Token> plusWords = new HashSet<>();
         HashSet<Token> noSignWords = new HashSet<>();
         HashSet<Token> minusWords = new HashSet<>();
@@ -30,7 +30,7 @@ public class QueryEngine {
                     noSignWords.add(new Token(w));
             }
         }
-        return query(plusWords, noSignWords, minusWords);
+        return advancedSearch(plusWords, noSignWords, minusWords);
     }
 
 
@@ -43,9 +43,9 @@ public class QueryEngine {
      * @param minusWords list of words with - tag
      * @return the result is the set of documents the advanced search mechanism as mentioned in phase 1 documentations
      */
-    public Set<Document> query(Set<Token> plusWords,
-                               Set<Token> noSignWords,
-                               Set<Token> minusWords) {
+    public Set<Document> advancedSearch(Set<Token> plusWords,
+                                        Set<Token> noSignWords,
+                                        Set<Token> minusWords) {
         final Set<Document> plusDocs = getUnionOfDocsContainingWords(plusWords);
         final Set<Document> noSignDocs = getIntersectionOfDocsContainingWords(noSignWords);
         final Set<Document> minusDocs = getUnionOfDocsContainingWords(minusWords);
@@ -72,7 +72,7 @@ public class QueryEngine {
     private Set<Document> getUnionOfDocsContainingWords(Set<Token> tokens) {
         final Set<Document> result = new HashSet<>();
         for (Token token : tokens) {
-            result.addAll(index.query(token));
+            result.addAll(index.search(token));
         }
         return result;
     }
@@ -85,9 +85,9 @@ public class QueryEngine {
         Set<Document> result = new TreeSet<>();
         for (Token token : tokens) {
             if (result.isEmpty()) {
-                result.addAll(index.query(token));
+                result.addAll(index.search(token));
             } else {
-                result.retainAll(index.query(token));
+                result.retainAll(index.search(token));
                 if (result.isEmpty())
                     break;
             }

@@ -26,7 +26,7 @@ public class InvertedIndex {
         }
     }
 
-    public Set<Document> query(Token token) {
+    public Set<Document> search(Token token) {
         return data.getOrDefault(token, new HashSet<>());
     }
 }

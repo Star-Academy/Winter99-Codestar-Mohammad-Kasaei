@@ -24,7 +24,7 @@ public class Main {
         while (!terminate) {
             System.out.printf("Enter list of words to find in sample english database (finish input by %s (3 dashes))\n", TERMINATION_STRING);
             ArrayList<String> listOfWords = getListOfWords(scanner);
-            System.out.println(queryEngine.query(listOfWords));
+            System.out.println(queryEngine.advancedSearch(listOfWords));
             terminate = askToTerminate(scanner);
         }
         scanner.close();
