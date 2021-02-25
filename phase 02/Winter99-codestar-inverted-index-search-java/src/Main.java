@@ -4,24 +4,10 @@ import java.util.Scanner;
 
 public class Main {
 
-    /**
-     * The main object to get result of the queries from
-     */
     private static QueryEngine queryEngine;
-    /**
-     * Path of source files to read the docs from
-     */
     private static final String path = "EnglishData";
-    /**
-     * Shows the end of input in list of words to query
-     */
     private static final String TERMINATION_STRING = "---";
 
-    /**
-     * Starting point of the program
-     *
-     * @param args system arguments
-     */
     public static void main(String[] args) {
         initializeEngine();
         startCLI();

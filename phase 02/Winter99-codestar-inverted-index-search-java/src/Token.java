@@ -3,10 +3,6 @@ import java.util.Objects;
 
 public class Token {
     private static final String INVALID_TOKENS_REGEX = "\\W+";
-
-    /**
-     * The main string of token
-     */
     private final String value;
 
     /**
@@ -35,8 +31,6 @@ public class Token {
     }
 
     /**
-     * Converts all the file to lower case
-     *
      * @param content everything in the file to be reverse indexed
      * @return normalized content of the file
      */
