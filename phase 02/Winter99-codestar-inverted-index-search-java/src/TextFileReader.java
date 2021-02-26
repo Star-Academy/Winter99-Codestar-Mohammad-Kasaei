@@ -10,7 +10,7 @@ public class TextFileReader {
     public Map<Document, String> readAllFileInFolder(String folderPath) {
         Map<Document, String> result = new HashMap<>();
         for (File f : listOfFileInFolder(folderPath)) {
-            result.put(new Document(f.getPath(), f.getName()), readTextFile(f));
+            result.put(new Document(f.getName()), readTextFile(f));
         }
         return result;
     }

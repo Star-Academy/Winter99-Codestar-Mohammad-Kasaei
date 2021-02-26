@@ -1,20 +1,14 @@
 import java.util.Objects;
 
 public class Document implements Comparable<Document> {
-    private final String fullPath;
-    private final String name;
+    private final String id;
 
-    public Document(String fullPath, String name) {
-        this.fullPath = fullPath;
-        this.name = name;
+    public Document(String id) {
+        this.id = id;
     }
 
-    public String getFullPath() {
-        return fullPath;
-    }
-
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
     @Override
@@ -22,21 +16,21 @@ public class Document implements Comparable<Document> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Document document = (Document) o;
-        return Objects.equals(fullPath, document.fullPath) && Objects.equals(name, document.name);
+        return Objects.equals(id, document.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fullPath, name);
+        return Objects.hash(id);
     }
 
     @Override
-    public int compareTo(Document o) {
-        return fullPath.compareTo(o.fullPath);
+    public int compareTo(Document object) {
+        return id.compareTo(object.id);
     }
 
     @Override
     public String toString() {
-        return String.format("{Document name : %s , path : %s}", getName(), getFullPath());
+        return String.format("{Document id : %s}", getId());
     }
 }
