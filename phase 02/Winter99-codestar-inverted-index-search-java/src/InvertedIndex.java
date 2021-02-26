@@ -11,7 +11,7 @@ public class InvertedIndex {
     }
 
     public void addDocument(Document doc, String content) {
-        Token[] tokens = Token.textToTokens(content);
+        Token[] tokens = Tokenizer.contentToTokens(content);
         for (Token t : tokens) {
             if (!data.containsKey(t)) {
                 data.put(t, new HashSet<>());
