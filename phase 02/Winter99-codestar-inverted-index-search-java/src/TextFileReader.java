@@ -8,7 +8,7 @@ import java.util.Map;
 public class TextFileReader {
 
     public static Map<Document, String> readAllFileInFolder(String folderPath) {
-        Map<Document, String> result = new HashMap<>();
+        final Map<Document, String> result = new HashMap<>();
         for (File f : listOfFileInFolder(folderPath)) {
             result.put(new Document(f.getName()), readTextFile(f));
         }
@@ -16,21 +16,20 @@ public class TextFileReader {
     }
 
     private static File[] listOfFileInFolder(String folderPath) {
-        File folder = new File(folderPath);
+        final File folder = new File(folderPath);
         return folder.listFiles();
     }
 
     public static String readTextFile(File file) {
-        FileReader fileReader;
+        final FileReader fileReader;
         BufferedReader reader = null;
         try {
             fileReader = new FileReader(file);
             reader = new BufferedReader(fileReader);
             String line;
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                sb.append("\n");
+                sb.append(line).append('\n');
             }
             return sb.toString();
         } catch (IOException e) {
