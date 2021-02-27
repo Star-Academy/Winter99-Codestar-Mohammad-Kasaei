@@ -7,7 +7,7 @@ public class Main {
         final InvertedIndex invertedIndex = new InvertedIndex();
         final Map<Document, String> docs = TextFileReader.readAllFileInFolder(path);
         invertedIndex.addDocuments(docs);
-        QueryEngine queryEngine = new QueryEngine(invertedIndex);
+        final QueryEngine queryEngine = new QueryEngine(invertedIndex);
         final CommandLine cmd = new CommandLine(queryEngine::advancedSearch);
         cmd.start();
     }
