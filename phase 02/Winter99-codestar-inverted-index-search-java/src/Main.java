@@ -4,9 +4,8 @@ public class Main {
 
     public static void main(String[] args) {
         final String path = "EnglishData";
-        final TextFileReader reader = new TextFileReader();
         final InvertedIndex invertedIndex = new InvertedIndex();
-        final Map<Document, String> docs = reader.readAllFileInFolder(path);
+        final Map<Document, String> docs = TextFileReader.readAllFileInFolder(path);
         invertedIndex.addDocuments(docs);
         QueryEngine queryEngine = new QueryEngine(invertedIndex);
         final CommandLine cmd = new CommandLine(queryEngine::advancedSearch);
