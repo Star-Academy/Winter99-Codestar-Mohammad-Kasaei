@@ -1,51 +1,35 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class TextFileReader {
 
-    /**
-     * Reads all the files in the folder as text
-     *
-     * @param folderPath source of input data
-     * @return map (file name) ==>> (file content)
-     */
-    public Map<String, String> readAllFileInFolder(String folderPath) {
-        Map<String, String> result = new HashMap<>();
+    public static Map<Document, String> readAllFileInFolder(String folderPath) {
+        final Map<Document, String> result = new HashMap<>();
         for (File f : listOfFileInFolder(folderPath)) {
-            result.put(f.getName(), readTextFile(f));
+            result.put(new Document(f.getName()), readTextFile(f));
         }
         return result;
     }
 
-    /**
-     * @param folderPath source of input data
-     * @return list of all files stored in the folder
-     */
-    private File[] listOfFileInFolder(String folderPath) {
-        File folder = new File(folderPath);
-        // todo: filter files
+    private static File[] listOfFileInFolder(String folderPath) {
+        final File folder = new File(folderPath);
         return folder.listFiles();
     }
 
-    /**
-     * Read the file given as parameter
-     *
-     * @param file input file
-     * @return content of the file
-     */
-
-    public String readTextFile(File file) {
-        FileReader fileReader = null;
+    public static String readTextFile(File file) {
+        final FileReader fileReader;
         BufferedReader reader = null;
         try {
             fileReader = new FileReader(file);
             reader = new BufferedReader(fileReader);
             String line;
-            StringBuilder sb = new StringBuilder();
+            final StringBuilder sb = new StringBuilder();
             while ((line = reader.readLine()) != null) {
-                sb.append(line);
-                sb.append("\n");
+                sb.append(line).append('\n');
             }
             return sb.toString();
         } catch (IOException e) {

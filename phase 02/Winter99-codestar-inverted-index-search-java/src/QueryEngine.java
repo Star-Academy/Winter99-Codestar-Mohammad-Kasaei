@@ -10,33 +10,46 @@ public class QueryEngine {
         this.index = index;
     }
 
-    public Set<String> query(ArrayList<String> words) {
-        HashSet<String> plusWords = new HashSet<>();
-        HashSet<String> noSignWords = new HashSet<>();
-        HashSet<String> minusWords = new HashSet<>();
+    /**
+     * @param words list of words to query (words can have + or - tag prefixes or no prefix)
+     * @return the result of advanced search mentioned in the docs
+     */
+    public Set<Document> advancedSearch(ArrayList<String> words) {
+        HashSet<Token> plusWords = new HashSet<>();
+        HashSet<Token> noSignWords = new HashSet<>();
+        HashSet<Token> minusWords = new HashSet<>();
         for (String w : words) {
             switch (w.charAt(0)) {
                 case '+':
-                    plusWords.add(w.substring(1));
+                    plusWords.add(new Token(w.substring(1)));
                     break;
                 case '-':
-                    minusWords.add(w.substring(1));
+                    minusWords.add(new Token(w.substring(1)));
                     break;
                 default:
-                    noSignWords.add(w);
+                    noSignWords.add(new Token(w));
             }
         }
-        return query(plusWords, noSignWords, minusWords);
+        return advancedSearch(plusWords, noSignWords, minusWords);
     }
 
 
-    public Set<String> query(Set<String> plusWords,
-                             Set<String> noSignWords,
-                             Set<String> minusWords) {
-        final Set<String> plusDocs = getUnionOfDocsContainingWords(plusWords);
-        final Set<String> noSignDocs = getIntersectionOfDocsContainingWords(noSignWords);
-        final Set<String> minusDocs = getUnionOfDocsContainingWords(minusWords);
-        Set<String> ansDocs = new HashSet<>();
+    /**
+     *
+     * Performs advanced query mentioned in the project documents
+     *
+     * @param plusWords   list of words with + tag
+     * @param noSignWords list of words with no sign
+     * @param minusWords list of words with - tag
+     * @return the result is the set of documents the advanced search mechanism as mentioned in phase 1 documentations
+     */
+    public Set<Document> advancedSearch(Set<Token> plusWords,
+                                        Set<Token> noSignWords,
+                                        Set<Token> minusWords) {
+        final Set<Document> plusDocs = getUnionOfDocsContainingWords(plusWords);
+        final Set<Document> noSignDocs = getIntersectionOfDocsContainingWords(noSignWords);
+        final Set<Document> minusDocs = getUnionOfDocsContainingWords(minusWords);
+        Set<Document> ansDocs = new HashSet<>();
         if (plusDocs.isEmpty()) {
             ansDocs.addAll(noSignDocs);
         } else if (noSignDocs.isEmpty()) {
@@ -52,29 +65,33 @@ public class QueryEngine {
     }
 
 
-    private Set<String> getUnionOfDocsContainingWords(Set<String> tokens) {
-        final Set<String> result = new HashSet<>();
-        for (String token : tokens) {
-            result.addAll(index.query(token));
+    /**
+     * @param tokens list of tokens
+     * @return set of all docs containing at least one of the tokens in <code>token</code>
+     */
+    private Set<Document> getUnionOfDocsContainingWords(Set<Token> tokens) {
+        final Set<Document> result = new HashSet<>();
+        for (Token token : tokens) {
+            result.addAll(index.search(token));
         }
         return result;
     }
 
-    private Set<String> getIntersectionOfDocsContainingWords(Set<String> tokens) {
-        Set<String> result = null;
-        for (String word : tokens) {
-            if (result == null) {
-                result = new HashSet<>(index.query(word));
+    /**
+     * @param tokens set of tokens
+     * @return set of all documents containing every token in {@code tokens}
+     */
+    private Set<Document> getIntersectionOfDocsContainingWords(Set<Token> tokens) {
+        Set<Document> result = new TreeSet<>();
+        for (Token token : tokens) {
+            if (result.isEmpty()) {
+                result.addAll(index.search(token));
             } else {
-                result.retainAll(index.query(word));
+                result.retainAll(index.search(token));
                 if (result.isEmpty())
                     break;
             }
         }
-        if (result == null) {
-            return new TreeSet<>();
-        } else {
-            return result;
-        }
+        return result;
     }
 }
