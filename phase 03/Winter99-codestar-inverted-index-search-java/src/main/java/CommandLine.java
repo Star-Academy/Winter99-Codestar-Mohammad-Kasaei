@@ -5,7 +5,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 public class CommandLine {
-    private static final String DEFAULT_TERMINATOR = "---";
+    public static final String DEFAULT_TERMINATOR = "---";
 
     public interface Events {
         Set<Document> onNewSearchQuery(ArrayList<String> words);
@@ -21,10 +21,6 @@ public class CommandLine {
         this.terminationString = terminationString;
         this.inputStream = inputStream;
         this.printStream = printStream;
-    }
-
-    public CommandLine(Events eventsHandler) {
-        this(eventsHandler, DEFAULT_TERMINATOR, System.in, System.out);
     }
 
     public void start() {
