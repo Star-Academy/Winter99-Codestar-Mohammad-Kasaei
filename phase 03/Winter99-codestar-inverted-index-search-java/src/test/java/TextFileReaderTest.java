@@ -2,11 +2,14 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TextFileReaderTest {
 
@@ -14,6 +17,7 @@ public class TextFileReaderTest {
     private File emptyFolder;
     private File dataFolder;
     private File simpleFile;
+    private File longFile;
 
     final Map<Document, String> docsData = new HashMap<>();
     private final Document doc1 = new Document("Doc1");
@@ -23,6 +27,8 @@ public class TextFileReaderTest {
     private final Document doc4 = new Document("Doc4");
     private static final String SIMPLE_TEST_FILE = "mySimpleFile";
     private static final String SIMPLE_CONTENT = "this";
+    private static final String LONG_TEST_FILE = "longFile";
+    private static final String LONG_CONTENT = "this is \nvery long \ncontent \n to test new line in the string .....";
 
 
     @Before
@@ -47,6 +53,8 @@ public class TextFileReaderTest {
         dataFolder.mkdirs();
         simpleFile = new File(testFolder, SIMPLE_TEST_FILE);
         writeToFile(simpleFile, SIMPLE_CONTENT);
+        longFile = new File(testFolder, LONG_TEST_FILE);
+        writeToFile(longFile, LONG_CONTENT);
         for (Map.Entry<Document, String> records : docsData.entrySet()) {
             final File dataFile = new File(dataFolder, records.getKey().getId());
             writeToFile(dataFile, records.getValue());
@@ -71,6 +79,7 @@ public class TextFileReaderTest {
         dataFolder.delete();
         emptyFolder.delete();
         simpleFile.delete();
+        longFile.delete();
         testFolder.delete();
     }
 
@@ -87,7 +96,7 @@ public class TextFileReaderTest {
     }
 
     @Test
-    public void notExistingTest() {
+    public void notExistingDirectoryTest() {
         Map<Document, String> result = new TextFileReader("NotExistingDirectory").readAllFileInFolder();
         assertEquals(0, result.size());
     }
@@ -96,4 +105,17 @@ public class TextFileReaderTest {
     public void readTextFileTest() {
         assertEquals(SIMPLE_CONTENT, TextFileReader.readTextFile(simpleFile));
     }
+
+    @Test
+    public void readLongTextFileTest() {
+        assertEquals(LONG_CONTENT, TextFileReader.readTextFile(longFile));
+    }
+
+    @Test
+    public void notExistingFile() {
+        String result = TextFileReader.readTextFile(new File("notExistingFileToRead"));
+        assertEquals("", result);
+    }
+
+
 }
