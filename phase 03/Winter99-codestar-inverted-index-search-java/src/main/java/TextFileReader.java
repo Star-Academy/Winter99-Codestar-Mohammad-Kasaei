@@ -15,10 +15,16 @@ public class TextFileReader {
 
     public Map<Document, String> readAllFileInFolder() {
         final Map<Document, String> result = new HashMap<>();
-        for (File f : listOfFileInFolder()) {
-            result.put(new Document(f.getName()), readTextFile(f));
+        if (pathExists()) {
+            for (File f : listOfFileInFolder()) {
+                result.put(new Document(f.getName()), readTextFile(f));
+            }
         }
         return result;
+    }
+
+    private boolean pathExists() {
+        return new File(path).exists();
     }
 
     private File[] listOfFileInFolder() {
@@ -26,7 +32,7 @@ public class TextFileReader {
         return folder.listFiles();
     }
 
-    private String readTextFile(File file) {
+    public static String readTextFile(File file) {
         final FileReader fileReader;
         BufferedReader reader = null;
         try {
@@ -35,7 +41,10 @@ public class TextFileReader {
             String line;
             final StringBuilder sb = new StringBuilder();
             while ((line = reader.readLine()) != null) {
-                sb.append(line).append('\n');
+                if (sb.length() > 0) {
+                    sb.append('\n');
+                }
+                sb.append(line);
             }
             return sb.toString();
         } catch (IOException e) {
