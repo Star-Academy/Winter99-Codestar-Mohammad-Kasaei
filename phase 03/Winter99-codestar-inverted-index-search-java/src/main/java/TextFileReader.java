@@ -7,20 +7,26 @@ import java.util.Map;
 
 public class TextFileReader {
 
-    public static Map<Document, String> readAllFileInFolder(String folderPath) {
+    final String path;
+
+    public TextFileReader(String path) {
+        this.path = path;
+    }
+
+    public Map<Document, String> readAllFileInFolder() {
         final Map<Document, String> result = new HashMap<>();
-        for (File f : listOfFileInFolder(folderPath)) {
+        for (File f : listOfFileInFolder()) {
             result.put(new Document(f.getName()), readTextFile(f));
         }
         return result;
     }
 
-    private static File[] listOfFileInFolder(String folderPath) {
-        final File folder = new File(folderPath);
+    private File[] listOfFileInFolder() {
+        final File folder = new File(path);
         return folder.listFiles();
     }
 
-    public static String readTextFile(File file) {
+    private String readTextFile(File file) {
         final FileReader fileReader;
         BufferedReader reader = null;
         try {
