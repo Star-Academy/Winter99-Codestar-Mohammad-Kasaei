@@ -31,6 +31,7 @@ public class TextFileReaderTest {
     private static final String LONG_CONTENT = "this is \nvery long \ncontent \n to test new line in the string .....";
 
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Before
     public void setUp() throws IOException {
         docsData.clear();
@@ -68,6 +69,7 @@ public class TextFileReaderTest {
     }
 
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @After
     public void tearDown() {
         File[] files = dataFolder.listFiles();

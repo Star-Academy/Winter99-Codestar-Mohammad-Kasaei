@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotEquals;
 
 public class TokenTest {
 
+    @SuppressWarnings("AssertBetweenInconvertibleTypes")
     @Test
     public void testEquals() {
         final String tokenString = "My_TOKEN:)";

@@ -26,6 +26,7 @@ public class DocumentTest {
         assertEquals(docID1, doc1.getId());
     }
 
+    @SuppressWarnings("AssertBetweenInconvertibleTypes")
     @Test
     public void testEquals() {
         assertNotEquals(null, doc1);
