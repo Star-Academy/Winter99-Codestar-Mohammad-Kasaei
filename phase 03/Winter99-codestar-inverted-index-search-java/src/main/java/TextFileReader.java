@@ -1,9 +1,8 @@
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class TextFileReader {
 
@@ -33,30 +32,17 @@ public class TextFileReader {
     }
 
     public static String readTextFile(File file) {
-        final FileReader fileReader;
-        BufferedReader reader = null;
-        try {
-            fileReader = new FileReader(file);
-            reader = new BufferedReader(fileReader);
-            String line;
+        try (Scanner scanner = new Scanner(file)) {
             final StringBuilder sb = new StringBuilder();
-            while ((line = reader.readLine()) != null) {
+            while (scanner.hasNextLine()) {
                 if (sb.length() > 0) {
                     sb.append('\n');
                 }
-                sb.append(line);
+                sb.append(scanner.nextLine());
             }
             return sb.toString();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
         }
         return "";
     }
