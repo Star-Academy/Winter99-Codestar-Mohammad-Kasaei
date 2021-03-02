@@ -1,4 +1,3 @@
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -44,10 +43,6 @@ public class QueryEngineTest {
                 .thenReturn(new TreeSet<>(Arrays.asList(repairDishwasher, buyDishwasher)));
     }
 
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void andTest() {
         final Set<Document> expectedDocs = new TreeSet<>(
@@ -73,17 +68,7 @@ public class QueryEngineTest {
     }
 
     @Test
-    public void complex1Test() {
-        final Set<Document> expectedDocs = new TreeSet<>();
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("+dishwasher", "repair", "buy")
-        );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(expectedDocs, gotDocs);
-    }
-
-    @Test
-    public void complex2Test() {
+    public void andNotComplexTest() {
         final Set<Document> expectedDocs = new TreeSet<>();
         final ArrayList<String> listOfWords = new ArrayList<>(
                 Arrays.asList("+car", "+dishwasher", "-buy", "-repair")
@@ -93,7 +78,7 @@ public class QueryEngineTest {
     }
 
     @Test
-    public void complex3Test() {
+    public void andNotTest() {
         final Set<Document> expectedDocs = new TreeSet<>(
                 Arrays.asList(repairCar, repairDishwasher)
         );
@@ -105,7 +90,17 @@ public class QueryEngineTest {
     }
 
     @Test
-    public void complex4Test() {
+    public void andOr1Test() {
+        final Set<Document> expectedDocs = new TreeSet<>();
+        final ArrayList<String> listOfWords = new ArrayList<>(
+                Arrays.asList("+dishwasher", "repair", "buy")
+        );
+        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
+        assertEquals(expectedDocs, gotDocs);
+    }
+
+    @Test
+    public void andOr2Test() {
         final Set<Document> expectedDocs = new TreeSet<>(
                 Arrays.asList(repairBuyCar, buyCar, buyDishwasher)
         );
@@ -117,7 +112,7 @@ public class QueryEngineTest {
     }
 
     @Test
-    public void complex5Test() {
+    public void andComplexTest() {
         final Set<Document> expectedDocs = new TreeSet<>();
         final ArrayList<String> listOfWords = new ArrayList<>(
                 Arrays.asList("car", "dishwasher")
