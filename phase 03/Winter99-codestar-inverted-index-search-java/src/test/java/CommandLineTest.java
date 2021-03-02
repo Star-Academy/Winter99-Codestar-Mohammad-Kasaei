@@ -4,10 +4,9 @@ import org.junit.Test;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.TreeSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CommandLineTest {
 
@@ -16,20 +15,18 @@ public class CommandLineTest {
     private InputStream inputStream;
     private PrintStream printStream;
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @Before
     public void setUp() throws Exception {
         inFile = new File("in");
         outFile = new File("out");
-        if (!inFile.exists()) {
-            inFile.createNewFile();
-        }
-        if (!outFile.exists()) {
-            outFile.createNewFile();
-        }
+        inFile.createNewFile();
+        outFile.createNewFile();
         inputStream = new FileInputStream(inFile);
         printStream = new PrintStream(outFile);
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     @After
     public void tearDown() throws Exception {
         inputStream.close();
@@ -58,13 +55,11 @@ public class CommandLineTest {
         expectedQueries.add(expectedQuery);
         writeToInputFile("hello\nMohammad\nMe\n---\ny");
         ArrayList<ArrayList<String>> queries = new ArrayList<>();
-        CommandLine commandLine = new CommandLine(new CommandLine.Events() {
-            @Override
-            public Set<Document> onNewSearchQuery(ArrayList<String> words) {
-                queries.add(words);
-                return new TreeSet<>();
-            }
-        }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
+        CommandLine commandLine = new CommandLine(
+                words -> {
+                    queries.add(words);
+                    return new TreeSet<>();
+                }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
         commandLine.start();
         assertEquals(expectedQueries.size(), queries.size());
         assertEquals(expectedQueries, queries);
@@ -85,13 +80,11 @@ public class CommandLineTest {
 
         writeToInputFile("hello\nMohammad\nMe\n---\nn\nAli\nReza\n---\ny");
         ArrayList<ArrayList<String>> queries = new ArrayList<>();
-        CommandLine commandLine = new CommandLine(new CommandLine.Events() {
-            @Override
-            public Set<Document> onNewSearchQuery(ArrayList<String> words) {
-                queries.add(words);
-                return new TreeSet<>();
-            }
-        }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
+        CommandLine commandLine = new CommandLine(
+                words -> {
+                    queries.add(words);
+                    return new TreeSet<>();
+                }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
         commandLine.start();
         assertEquals(expectedQueries.size(), queries.size());
         assertEquals(expectedQueries, queries);
@@ -101,13 +94,11 @@ public class CommandLineTest {
     public void emptyTest() {
         writeToInputFile("---\nnothing\ny");
         ArrayList<ArrayList<String>> queries = new ArrayList<>();
-        CommandLine commandLine = new CommandLine(new CommandLine.Events() {
-            @Override
-            public Set<Document> onNewSearchQuery(ArrayList<String> words) {
-                queries.add(words);
-                return new TreeSet<>();
-            }
-        }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
+        CommandLine commandLine = new CommandLine(
+                words -> {
+                    queries.add(words);
+                    return new TreeSet<>();
+                }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
         commandLine.start();
         assertEquals(1, queries.size());
         assertEquals(0, queries.get(0).size());
