@@ -1,4 +1,3 @@
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -8,18 +7,10 @@ public class DocumentTest {
 
     private final String docID1 = "Document ID 1";
     private final String docID2 = "Document ID 2";
-    private Document doc1;
-    private Document doc1Copy;
-    private Document doc2;
-    private Document doc2Copy;
-
-    @Before
-    public void setup() {
-        doc1 = new Document(docID1);
-        doc1Copy = new Document(docID1);
-        doc2 = new Document(docID2);
-        doc2Copy = new Document(docID2);
-    }
+    private final Document doc1 = new Document(docID1);
+    private final Document doc1Copy = new Document(docID1);
+    private final Document doc2 = new Document(docID2);
+    private final Document doc2Copy = new Document(docID2);
 
     @Test
     public void getId() {

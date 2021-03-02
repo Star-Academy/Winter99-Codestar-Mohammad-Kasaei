@@ -4,6 +4,8 @@ import org.junit.Test;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.TreeSet;
 
 import static org.junit.Assert.assertEquals;
@@ -47,60 +49,43 @@ public class CommandLineTest {
 
     @Test
     public void oneQueryTest() {
-        ArrayList<ArrayList<String>> expectedQueries = new ArrayList<>();
-        ArrayList<String> expectedQuery = new ArrayList<>();
-        expectedQuery.add("hello");
-        expectedQuery.add("Mohammad");
-        expectedQuery.add("Me");
-        expectedQueries.add(expectedQuery);
-        writeToInputFile("hello\nMohammad\nMe\n---\ny");
-        ArrayList<ArrayList<String>> queries = new ArrayList<>();
-        CommandLine commandLine = new CommandLine(
-                words -> {
-                    queries.add(words);
-                    return new TreeSet<>();
-                }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
-        commandLine.start();
-        assertEquals(expectedQueries.size(), queries.size());
-        assertEquals(expectedQueries, queries);
+        ArrayList<ArrayList<String>> expectedQueries = new ArrayList<>(
+                Collections.singletonList(new ArrayList<>(
+                        Arrays.asList(
+                                "hello",
+                                "Mohammad",
+                                "Me"
+                        )
+                ))
+        );
+        runSearch("hello\nMohammad\nMe\n---\ny", expectedQueries);
     }
 
     @Test
     public void twoQueriesTest() {
-        final ArrayList<ArrayList<String>> expectedQueries = new ArrayList<>();
-        ArrayList<String> q = new ArrayList<>();
-        q.add("hello");
-        q.add("Mohammad");
-        q.add("Me");
-        expectedQueries.add(q);
-        q = new ArrayList<>();
-        q.add("Ali");
-        q.add("Reza");
-        expectedQueries.add(q);
-
-        writeToInputFile("hello\nMohammad\nMe\n---\nn\nAli\nReza\n---\ny");
-        ArrayList<ArrayList<String>> queries = new ArrayList<>();
-        CommandLine commandLine = new CommandLine(
-                words -> {
-                    queries.add(words);
-                    return new TreeSet<>();
-                }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
-        commandLine.start();
-        assertEquals(expectedQueries.size(), queries.size());
-        assertEquals(expectedQueries, queries);
+        final ArrayList<ArrayList<String>> expectedQueries = new ArrayList<>(
+                Arrays.asList(
+                        new ArrayList<>(Arrays.asList("hello", "Mohammad", "Me")),
+                        new ArrayList<>(Arrays.asList("Ali", "Reza"))
+                )
+        );
+        runSearch("hello\nMohammad\nMe\n---\nn\nAli\nReza\n---\ny", expectedQueries);
     }
 
     @Test
     public void emptyTest() {
-        writeToInputFile("---\nnothing\ny");
-        ArrayList<ArrayList<String>> queries = new ArrayList<>();
+        runSearch("---\nnothing\ny", new ArrayList<>(Collections.singletonList(new ArrayList<>())));
+    }
+
+    public void runSearch(String inputString, ArrayList<ArrayList<String>> expectedQueries) {
+        writeToInputFile(inputString);
+        final ArrayList<ArrayList<String>> gotQueries = new ArrayList<>();
         CommandLine commandLine = new CommandLine(
                 words -> {
-                    queries.add(words);
+                    gotQueries.add(words);
                     return new TreeSet<>();
                 }, CommandLine.DEFAULT_TERMINATOR, inputStream, printStream);
         commandLine.start();
-        assertEquals(1, queries.size());
-        assertEquals(0, queries.get(0).size());
+        assertEquals(gotQueries, expectedQueries);
     }
 }

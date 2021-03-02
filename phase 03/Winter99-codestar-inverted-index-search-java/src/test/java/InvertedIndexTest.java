@@ -1,10 +1,7 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -20,60 +17,35 @@ public class InvertedIndexTest {
 
     @Before
     public void setup() {
-        final Map<Document, String> docsData = new HashMap<>();
-        docsData.put(doc1,
-                "this is simple doc one 1 and also contains some more info about every thing in the worlds");
-        docsData.put(doc2,
-                "this is simple doc one 2 and have nothing about reality");
-        docsData.put(doc3,
-                "this is simple doc one 3 and is super imaginary to be used in earth");
-        docsData.put(doc3_,
-                "this is simple doc one after doc 3 and is super imaginary to be used in earth(But is spam)");
-        docsData.put(doc4,
-                "how is going these days :>>>>)))");
-
+        final Map<Document, String> docsData = new HashMap<Document, String>() {{
+            put(doc1, "this is simple doc one 1 and also contains some more info about every thing in the worlds");
+            put(doc2, "this is simple doc one 2 and have nothing about reality");
+            put(doc3, "this is simple doc one 3 and is super imaginary to be used in earth");
+            put(doc3_, "this is simple doc one after doc 3 and is super imaginary to be used in earth(But is spam)");
+            put(doc4, "how is going these days :>>>>)))");
+        }};
         index = new InvertedIndex();
         index.addDocuments(docsData);
     }
 
     @Test
     public void searchIs() {
-        assertNotNull(index);
-        Set<Document> expected = new HashSet<>();
-        expected.add(doc1);
-        expected.add(doc2);
-        expected.add(doc3);
-        expected.add(doc3_);
-        expected.add(doc4);
-        Set<Document> found = index.search(new Token("is"));
-        assertEqualsDocsSets(found, expected);
+        runSearch("is", new HashSet<>(Arrays.asList(doc1, doc2, doc3, doc3_, doc4)));
     }
 
     @Test
     public void searchSimple() {
-        assertNotNull(index);
-        Set<Document> expected = new HashSet<>();
-        expected.add(doc1);
-        expected.add(doc2);
-        expected.add(doc3);
-        expected.add(doc3_);
-        Set<Document> found = index.search(new Token("simple"));
-        assertEqualsDocsSets(found, expected);
+        runSearch("simple", new HashSet<>(Arrays.asList(doc1, doc2, doc3, doc3_)));
     }
 
     @Test
     public void searchDays() {
-        assertNotNull(index);
-        Set<Document> expected = new HashSet<>();
-        expected.add(doc4);
-        Set<Document> found = index.search(new Token("days"));
-        assertEqualsDocsSets(found, expected);
+        runSearch("days", new HashSet<>(Collections.singletonList(doc4)));
     }
 
-    public void assertEqualsDocsSets(Set<Document> docs1, Set<Document> docs2) {
-        assertEquals(docs1.size(), docs2.size());
-        for (Document d : docs1) {
-            assertTrue(docs2.contains(d));
-        }
+    public void runSearch(String keyword, Set<Document> expected) {
+        assertNotNull(index);
+        final Set<Document> found = index.search(new Token(keyword));
+        assertEquals(found, expected);
     }
 }

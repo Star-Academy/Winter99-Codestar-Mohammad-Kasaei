@@ -45,80 +45,86 @@ public class QueryEngineTest {
 
     @Test
     public void andTest() {
-        final Set<Document> expectedDocs = new TreeSet<>(
-                Arrays.asList(repairBuyCar, buyCar)
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("Car", "buy")
+                ),
+                new TreeSet<>(
+                        Arrays.asList(repairBuyCar, buyCar)
+                )
         );
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("Car", "buy")
-        );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(gotDocs, expectedDocs);
     }
 
     @Test
     public void orTest() {
-        final Set<Document> expectedDocs = new TreeSet<>(
-                Arrays.asList(repairBuyCar, buyCar, repairCar, buyDishwasher, repairDishwasher)
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("+repair", "+buy")
+                ),
+                new TreeSet<>(
+                        Arrays.asList(repairBuyCar, buyCar, repairCar, buyDishwasher, repairDishwasher)
+                )
         );
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("+repair", "+buy")
-        );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(gotDocs, expectedDocs);
     }
 
     @Test
     public void andNotComplexTest() {
-        final Set<Document> expectedDocs = new TreeSet<>();
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("+car", "+dishwasher", "-buy", "-repair")
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("+car", "+dishwasher", "-buy", "-repair")
+                ),
+                new TreeSet<>()
         );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(expectedDocs, gotDocs);
     }
 
     @Test
     public void andNotTest() {
-        final Set<Document> expectedDocs = new TreeSet<>(
-                Arrays.asList(repairCar, repairDishwasher)
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("+car", "+dishwasher", "-buy")
+                ),
+                new TreeSet<>(
+                        Arrays.asList(repairCar, repairDishwasher)
+                )
         );
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("+car", "+dishwasher", "-buy")
-        );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(expectedDocs, gotDocs);
     }
 
     @Test
     public void andOr1Test() {
-        final Set<Document> expectedDocs = new TreeSet<>();
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("+dishwasher", "repair", "buy")
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("+dishwasher", "repair", "buy")
+                ),
+                new TreeSet<>()
         );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(expectedDocs, gotDocs);
     }
 
     @Test
     public void andOr2Test() {
-        final Set<Document> expectedDocs = new TreeSet<>(
-                Arrays.asList(repairBuyCar, buyCar, buyDishwasher)
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("+car", "+dishwasher", "buy")
+                ),
+                new TreeSet<>(
+                        Arrays.asList(repairBuyCar, buyCar, buyDishwasher)
+                )
         );
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("+car", "+dishwasher", "buy")
-        );
-        final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(expectedDocs, gotDocs);
     }
 
     @Test
     public void andComplexTest() {
-        final Set<Document> expectedDocs = new TreeSet<>();
-        final ArrayList<String> listOfWords = new ArrayList<>(
-                Arrays.asList("car", "dishwasher")
+        runEngineTest(
+                new ArrayList<>(
+                        Arrays.asList("car", "dishwasher")
+                ),
+                new TreeSet<>()
         );
+    }
+
+
+    public void runEngineTest(ArrayList<String> listOfWords, Set<Document> expected) {
         final Set<Document> gotDocs = engine.advancedSearch(listOfWords);
-        assertEquals(expectedDocs, gotDocs);
+        assertEquals(expected, gotDocs);
     }
 
 }
