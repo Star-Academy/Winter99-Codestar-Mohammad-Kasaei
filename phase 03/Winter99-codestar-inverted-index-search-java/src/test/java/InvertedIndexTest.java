@@ -44,7 +44,6 @@ public class InvertedIndexTest {
     }
 
     public void runSearch(String keyword, Set<Document> expected) {
-        assertNotNull(index);
         final Set<Document> found = index.search(new Token(keyword));
         assertEquals(found, expected);
     }

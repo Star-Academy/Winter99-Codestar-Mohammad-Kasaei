@@ -8,7 +8,6 @@ public class DocumentTest {
     private final String docID1 = "Document ID 1";
     private final String docID2 = "Document ID 2";
     private final Document doc1 = new Document(docID1);
-    private final Document doc1Copy = new Document(docID1);
     private final Document doc2 = new Document(docID2);
     private final Document doc2Copy = new Document(docID2);
 
@@ -17,22 +16,40 @@ public class DocumentTest {
         assertEquals(docID1, doc1.getId());
     }
 
+    @Test
+    public void EqualityNull() {
+        assertNotEquals(null, doc1);
+    }
+
     @SuppressWarnings("AssertBetweenInconvertibleTypes")
     @Test
-    public void testEquals() {
-        assertNotEquals(null, doc1);
+    public void EqualityDataType() {
         assertNotEquals(docID1, doc1);
-        assertNotEquals(doc1.toString(), doc1);
+    }
+
+    @Test
+    public void EqualityIdentical() {
         assertEquals(doc1, doc1);
+    }
+
+    @Test
+    public void EqualityNewObject() {
         assertEquals(new Document(docID1), doc1);
+    }
+
+    @Test
+    public void EqualityDifferentObjects() {
         assertNotEquals(doc1, doc2);
     }
 
     @Test
-    public void testHashCode() {
-        assertEquals(doc1.hashCode(), doc1Copy.hashCode());
-        assertEquals(doc2.hashCode(), doc2Copy.hashCode());
+    public void HashCodeDifferentDataTypes() {
         assertNotEquals(doc1.hashCode(), doc2.hashCode());
+    }
+
+    @Test
+    public void HashCodeDifferentIdenticalObjects() {
+        assertEquals(doc2.hashCode(), doc2Copy.hashCode());
     }
 
     @Test

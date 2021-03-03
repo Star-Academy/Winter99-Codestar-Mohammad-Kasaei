@@ -73,7 +73,7 @@ public class CommandLineTest {
     }
 
     @Test
-    public void emptyTest() {
+    public void emptyQueryWithErrorTerminationStrings() {
         runSearch("---\nnothing\ny", new ArrayList<>(Collections.singletonList(new ArrayList<>())));
     }
 

@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 public class TokenizerTest {
@@ -20,27 +21,31 @@ public class TokenizerTest {
 
     @Test
     public void contentToTokensEmptyString() {
-        Token[] tokens = Tokenizer.contentToTokens("");
-        assertEquals(0, tokens.length);
+        final Token[] tokens = Tokenizer.contentToTokens("");
+        assertArrayEquals(new Token[0], tokens);
     }
 
     @Test
     public void contentToTokens1() {
-        Token[] tokens = Tokenizer.contentToTokens("Hello I am mohammad");
-        assertEquals(4, tokens.length);
-        assertEquals(tokens[0].toString(), "hello");
-        assertEquals(tokens[1].toString(), "i");
-        assertEquals(tokens[2].toString(), "am");
-        assertEquals(tokens[3].toString(), "mohammad");
+        final Token[] tokens = Tokenizer.contentToTokens("Hello I am mohammad");
+        final Token[] expected = new Token[]{
+                new Token("hello"),
+                new Token("i"),
+                new Token("am"),
+                new Token("mohammad")
+        };
+        assertArrayEquals(expected, tokens);
     }
 
     @Test
     public void contentToTokens2() {
-        Token[] tokens = Tokenizer.contentToTokens("Hello)(((* I^ am mohammad??))(((****");
-        assertEquals(4, tokens.length);
-        assertEquals(tokens[0].toString(), "hello");
-        assertEquals(tokens[1].toString(), "i");
-        assertEquals(tokens[2].toString(), "am");
-        assertEquals(tokens[3].toString(), "mohammad");
+        final Token[] tokens = Tokenizer.contentToTokens("Hello)(((* I^ am mohammad??))(((****");
+        final Token[] expected = new Token[]{
+                new Token("hello"),
+                new Token("i"),
+                new Token("am"),
+                new Token("mohammad"),
+        };
+        assertArrayEquals(expected, tokens);
     }
 }
