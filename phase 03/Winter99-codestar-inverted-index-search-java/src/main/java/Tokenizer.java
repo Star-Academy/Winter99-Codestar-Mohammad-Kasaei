@@ -11,11 +11,15 @@ public class Tokenizer {
 
     public static Token[] contentToTokens(String content) {
         content = content.toLowerCase(Locale.ROOT);
-        String[] words = content.split(INVALID_TOKENS_REGEX);
-        Token[] tokens = new Token[words.length];
-        for (int i = 0; i < words.length; i++) {
-            tokens[i] = new Token(words[i]);
+        final String[] words = content.split(INVALID_TOKENS_REGEX);
+        if (content.length() > 0) {
+            final Token[] tokens = new Token[words.length];
+            for (int i = 0; i < words.length; i++) {
+                tokens[i] = new Token(words[i]);
+            }
+            return tokens;
+        } else {
+            return new Token[0];
         }
-        return tokens;
     }
 }
