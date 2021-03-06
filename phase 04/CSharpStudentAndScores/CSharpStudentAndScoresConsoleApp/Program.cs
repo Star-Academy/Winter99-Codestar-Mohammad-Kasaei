@@ -8,23 +8,14 @@ namespace CSharpStudentAndScoresConsoleApp
 {
     class Program
     {
-        private static readonly string Path = "C:\\Mohammad\\work\\Mohaimen\\CodeStar\\codestar-winter\\Winter99-Codestar-Mohammad-Kasaei\\phase 04\\CSharpStudentAndScores\\";
+        private static readonly string path = "C:\\Mohammad\\work\\Mohaimen\\CodeStar\\codestar-winter\\Winter99-Codestar-Mohammad-Kasaei\\phase 04\\CSharpStudentAndScores\\";
 
         private static String ReadDataFile(String fileName)
         {
-            return File.ReadAllText(Path + fileName);
+            return File.ReadAllText(path + fileName);
         }
 
-        private static (String, String) ReadInputFiles()
-        {
-            return (
-                ReadDataFile("Students.json"),
-                ReadDataFile("Scores.json")
-                );
-        }
-
-
-        private static IEnumerable<(string FirstName , string LastName , double Average)> FindTop3Students(List<Student> studentsList, List<ScoreRecord> scoresList)
+        private static IEnumerable<StudentAverage> FindTop3Students(List<Student> studentsList, List<ScoreRecord> scoresList)
         {
             var result = studentsList.Join(scoresList,
                 obj => obj.StudentNumber,
@@ -45,31 +36,29 @@ namespace CSharpStudentAndScoresConsoleApp
                 .Join(studentsList,
                 obj => obj.StudentNumber,
                 obj => obj.StudentNumber,
-                (studentAverage , student)=>
-                (
-                    student.FirstName,
-                    student.LastName,
-                    studentAverage.Average
-                ))
+                (studentAverage, student) =>
+                    new StudentAverage(student.FirstName, student.LastName, studentAverage.Average)
+                )
                 .Take(3);
             return result;
         }
 
-        private static void PrintResults(IEnumerable<(string FirstName, string LastName, double Average)> filteredStudents)
+        private static void PrintResults(IEnumerable<StudentAverage> filteredStudents)
         {
             Console.WriteLine("3 top people in the scores with average values:");
-            foreach (var (FirstName, LastName, Average) in filteredStudents)
+            foreach (var studentAverage in filteredStudents)
             {
-                Console.WriteLine(FirstName + " " + LastName + " ==>> " + Average);
+                Console.WriteLine(String.Format("{0} {1} ==>> {2}", studentAverage.FirstName, studentAverage.LastName, studentAverage.Average));
             }
         }
 
 
         static void Main(string[] args)
         {
-            (var Students, var Scores) = ReadInputFiles();
-            var studentsList = JsonSerializer.Deserialize<List<Student>>(Students);
-            var scoreRecords = JsonSerializer.Deserialize<List<ScoreRecord>>(Scores);
+            var students = ReadDataFile("Students.json");
+            var scores = ReadDataFile("Scores.json");
+            var studentsList = JsonSerializer.Deserialize<List<Student>>(students);
+            var scoreRecords = JsonSerializer.Deserialize<List<ScoreRecord>>(scores);
             PrintResults(FindTop3Students(studentsList, scoreRecords));
         }
     }
