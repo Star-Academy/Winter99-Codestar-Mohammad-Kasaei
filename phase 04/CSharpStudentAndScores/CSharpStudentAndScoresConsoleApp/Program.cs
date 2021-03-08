@@ -17,9 +17,9 @@ namespace CSharpStudentAndScoresConsoleApp
 
         private static IEnumerable<StudentAverage> FindTop3Students(List<Student> studentsList, List<ScoreRecord> scoresList)
         {
-            var result = studentsList.Join(scoresList,
-                obj => obj.StudentNumber,
-                obj => obj.StudentNumber,
+            var top3StudentNumbersWithAverage = studentsList.Join(scoresList,
+                student => student.StudentNumber,
+                scoreRecord => scoreRecord.StudentNumber,
                 (student, scoreRecord) =>
                 new
                 {
@@ -32,15 +32,15 @@ namespace CSharpStudentAndScoresConsoleApp
                     StudentNumber = group.Key,
                     Average = group.Average(row => row.Score)
                 })
-                .OrderByDescending(row => row.Average)
-                .Join(studentsList,
-                obj => obj.StudentNumber,
-                obj => obj.StudentNumber,
+                .OrderByDescending(row => row.Average);
+            var top3StudentsNamesWithAverage = top3StudentNumbersWithAverage.Join(studentsList,
+                row => row.StudentNumber,
+                student => student.StudentNumber,
                 (studentAverage, student) =>
                     new StudentAverage(student.FirstName, student.LastName, studentAverage.Average)
                 )
                 .Take(3);
-            return result;
+            return top3StudentsNamesWithAverage;
         }
 
         private static void PrintResults(IEnumerable<StudentAverage> filteredStudents)
