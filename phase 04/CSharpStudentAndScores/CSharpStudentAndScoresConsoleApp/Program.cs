@@ -17,29 +17,13 @@ namespace CSharpStudentAndScoresConsoleApp
 
         private static IEnumerable<StudentAverage> FindTop3Students(List<Student> studentsList, List<ScoreRecord> scoresList)
         {
-            var top3StudentNumbersWithAverage = studentsList.Join(scoresList,
-                student => student.StudentNumber,
-                scoreRecord => scoreRecord.StudentNumber,
-                (student, scoreRecord) =>
-                new
-                {
-                    student.StudentNumber,
-                    scoreRecord.Score
-                }
-                ).GroupBy(obj => obj.StudentNumber)
-                .Select(group => new
-                {
-                    StudentNumber = group.Key,
-                    Average = group.Average(row => row.Score)
-                })
-                .OrderByDescending(row => row.Average);
-            var top3StudentsNamesWithAverage = top3StudentNumbersWithAverage.Join(studentsList,
-                row => row.StudentNumber,
-                student => student.StudentNumber,
-                (studentAverage, student) =>
-                    new StudentAverage(student.FirstName, student.LastName, studentAverage.Average)
-                )
-                .Take(3);
+            var top3StudentNumbersWithString = (from scoreRow in scoresList
+                                                     group scoreRow by scoreRow.StudentNumber into gr
+                                                     select new { StudentNumber = gr.Key, StudentAverage = gr.Average(row => row.Score) });
+            var top3StudentsNamesWithAverage = (from row in top3StudentNumbersWithString
+                                                join student in studentsList on row.StudentNumber equals student.StudentNumber
+                                                orderby row.StudentAverage descending
+                                                select new StudentAverage(student.FirstName , student.LastName , row.StudentAverage)).Take(3);
             return top3StudentsNamesWithAverage;
         }
 
