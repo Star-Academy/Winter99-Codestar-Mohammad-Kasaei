@@ -8,7 +8,7 @@ namespace CSharpStudentAndScoresConsoleApp
 {
     class Program
     {
-        private static readonly string path = "C:\\Mohammad\\work\\Mohaimen\\CodeStar\\codestar-winter\\Winter99-Codestar-Mohammad-Kasaei\\phase 04\\CSharpStudentAndScores\\";
+        private static readonly string path = @"..\..\..\..\";
 
         private static String ReadDataFile(String fileName)
         {
