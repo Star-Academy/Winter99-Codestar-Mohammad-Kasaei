@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSharpStudentAndScoresConsoleApp
 {
-    class StudentAverage
+    public class StudentAverage
     {
         public StudentAverage(string firstName, string lastName, double average)
         {

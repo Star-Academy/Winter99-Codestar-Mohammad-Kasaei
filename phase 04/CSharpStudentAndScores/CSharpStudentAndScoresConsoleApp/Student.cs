@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CSharpStudentAndScoresConsoleApp
 {
-    class Student
+    public class Student
     {
         public int StudentNumber { get; set; }
         public String FirstName { get; set; }

@@ -2,7 +2,7 @@
 
 namespace CSharpStudentAndScoresConsoleApp
 {
-    class ScoreRecord
+    public class ScoreRecord
     {
         public int StudentNumber { get; set; }
         public String Lesson { get; set; }

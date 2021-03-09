@@ -27,23 +27,14 @@ namespace CSharpStudentAndScoresConsoleApp
             return top3StudentsNamesWithAverage;
         }
 
-        private static void PrintResults(IEnumerable<StudentAverage> filteredStudents)
-        {
-            Console.WriteLine("3 top people in the scores with average values:");
-            foreach (var studentAverage in filteredStudents)
-            {
-                Console.WriteLine(String.Format("{0} {1} ==>> {2}", studentAverage.FirstName, studentAverage.LastName, studentAverage.Average));
-            }
-        }
-
-
         static void Main(string[] args)
         {
+            var cmd = new CommandLine();
             var students = ReadDataFile("Students.json");
             var scores = ReadDataFile("Scores.json");
             var studentsList = JsonSerializer.Deserialize<List<Student>>(students);
             var scoreRecords = JsonSerializer.Deserialize<List<ScoreRecord>>(scores);
-            PrintResults(FindTop3Students(studentsList, scoreRecords));
+            cmd.DisplayResult(FindTop3Students(studentsList, scoreRecords));
         }
     }
 }
