@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Text.Json;
 using System.Linq;
 
@@ -8,13 +6,7 @@ namespace CSharpStudentAndScoresConsoleApp
 {
     class Program
     {
-        private static readonly string path = @"..\..\..\..\";
-
-        private static String ReadDataFile(String fileName)
-        {
-            return File.ReadAllText(path + fileName);
-        }
-
+        
         private static IEnumerable<StudentAverage> FindTop3Students(List<Student> studentsList, List<ScoreRecord> scoresList)
         {
             var top3StudentNumbersWithString = (from scoreRow in scoresList
@@ -30,8 +22,9 @@ namespace CSharpStudentAndScoresConsoleApp
         static void Main(string[] args)
         {
             var cmd = new CommandLine();
-            var students = ReadDataFile("Students.json");
-            var scores = ReadDataFile("Scores.json");
+            var reader = new FileReader(@"..\..\..\..\");
+            var students = reader.readTextFile("Students.json");
+            var scores = reader.readTextFile("Scores.json");
             var studentsList = JsonSerializer.Deserialize<List<Student>>(students);
             var scoreRecords = JsonSerializer.Deserialize<List<ScoreRecord>>(scores);
             cmd.DisplayResult(FindTop3Students(studentsList, scoreRecords));
