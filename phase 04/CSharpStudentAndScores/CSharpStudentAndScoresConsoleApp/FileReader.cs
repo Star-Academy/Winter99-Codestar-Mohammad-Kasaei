@@ -4,7 +4,7 @@ namespace CSharpStudentAndScoresConsoleApp
 {
     public class FileReader
     {
-        string path;
+        private readonly string path;
 
         public FileReader(string path)
         {

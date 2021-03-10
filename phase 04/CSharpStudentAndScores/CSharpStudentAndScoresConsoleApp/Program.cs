@@ -6,28 +6,29 @@ namespace CSharpStudentAndScoresConsoleApp
 {
     class Program
     {
-        
-        private static IEnumerable<StudentAverage> FindTop3Students(List<Student> studentsList, List<ScoreRecord> scoresList)
+        private static readonly string dataPath = @"..\..\..\..\";
+        private static readonly string studentsFileName = @"Students.json";
+        private static readonly string scoresFileName = @"Scores.json";
+
+        private static readonly FileReader reader = new FileReader(dataPath);
+
+        private static List<Student> students;
+        private static List<ScoreRecord> scoreRecords;
+
+        private static void LoadData()
         {
-            var top3StudentNumbersWithString = (from scoreRow in scoresList
-                                                     group scoreRow by scoreRow.StudentNumber into gr
-                                                     select new { StudentNumber = gr.Key, StudentAverage = gr.Average(row => row.Score) });
-            var top3StudentsNamesWithAverage = (from row in top3StudentNumbersWithString
-                                                join student in studentsList on row.StudentNumber equals student.StudentNumber
-                                                orderby row.StudentAverage descending
-                                                select new StudentAverage(student.FirstName , student.LastName , row.StudentAverage)).Take(3);
-            return top3StudentsNamesWithAverage;
+            var studentsText = reader.readTextFile(studentsFileName);
+            var scoresText = reader.readTextFile(scoresFileName);
+            students = JsonSerializer.Deserialize<List<Student>>(studentsText);
+            scoreRecords = JsonSerializer.Deserialize<List<ScoreRecord>>(scoresText);
         }
 
         static void Main(string[] args)
         {
             var cmd = new CommandLine();
-            var reader = new FileReader(@"..\..\..\..\");
-            var students = reader.readTextFile("Students.json");
-            var scores = reader.readTextFile("Scores.json");
-            var studentsList = JsonSerializer.Deserialize<List<Student>>(students);
-            var scoreRecords = JsonSerializer.Deserialize<List<ScoreRecord>>(scores);
-            cmd.DisplayResult(FindTop3Students(studentsList, scoreRecords));
+            LoadData();
+            var queryEngine = new QueryEngine(students, scoreRecords);
+            cmd.DisplayResult(queryEngine.QueryTopStudentsByAverage(3));
         }
     }
 }
