@@ -21,10 +21,21 @@ namespace SearchConsoleApp
 
         public void Start()
         {
-            Console.WriteLine("Welcome to Search engine\n\nEnter List of Queries:");
+            PrintGreeting();
+            Console.WriteLine("Enter List of Queries:");
             var line = Console.ReadLine();
             var docs = handle(line.Split(" "));
-            if(docs.GetEnumerable().Any())
+            PrintResults(docs);           
+        }
+
+        private static void PrintGreeting()
+        {
+            Console.WriteLine("Welcome to Search engine\n\n");
+        }
+
+        private static void PrintResults(DocumentSet docs)
+        {
+            if (docs.GetEnumerable().Any())
             {
                 foreach (var doc in docs.GetEnumerable())
                 {
@@ -35,7 +46,6 @@ namespace SearchConsoleApp
             {
                 Console.WriteLine(@$"No document found");
             }
-            
         }
     }
 }
