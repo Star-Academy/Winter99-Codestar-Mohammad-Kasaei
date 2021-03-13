@@ -9,7 +9,7 @@ namespace SearchConsoleApp
 
         private readonly Func<string[], DocumentSet> handle;
 
-        public interface ICommandLine
+        public interface ICommandLineCallback
         {
             public DocumentSet SearchWordsList(string[] words);
         }
