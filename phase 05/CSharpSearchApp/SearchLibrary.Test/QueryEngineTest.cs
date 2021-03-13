@@ -20,11 +20,16 @@ namespace SearchLibrary.Test
         private static readonly Document repairBike = new("repair_bike");
         private static readonly Document buyBike = new("buy_bike");
 
+
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void ConstructorTest()
         {
             InvertedIndex index = new();
             _ = new QueryEngine(index);
+            Assert.True(true);
         }
 
         private static InvertedIndex GetMockedInvertedIndex()
@@ -80,6 +85,9 @@ namespace SearchLibrary.Test
             return index.Object;
         }
 
+        /// <summary>
+        /// just to make sure that constructor and mock works correctly
+        /// </summary>
         [Fact]
         public void MockTest()
         {

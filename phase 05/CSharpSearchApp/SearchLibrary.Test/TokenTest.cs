@@ -7,10 +7,14 @@ namespace SearchLibrary.Test
     [ExcludeFromCodeCoverage]
     public class TokenTest
     {
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void ConstructionTest()
         {
             _ = new Token("testString");
+            Assert.True(true);
         } 
         
         [Fact]

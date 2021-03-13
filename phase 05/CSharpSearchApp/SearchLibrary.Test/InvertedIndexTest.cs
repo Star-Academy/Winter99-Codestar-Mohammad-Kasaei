@@ -8,12 +8,20 @@ namespace SearchLibrary.Test
     [ExcludeFromCodeCoverage]
     public class InvertedIndexTest
     {
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void ConstructorEmptyTest()
         {
             _ = new InvertedIndex();
+            Assert.True(true);
         }
 
+
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void ConstructorDictionaryTest()
         {
@@ -22,13 +30,19 @@ namespace SearchLibrary.Test
                 {new Document("doc") , "this is content of the file" }
             };
             _ = new InvertedIndex(inputData);
+            Assert.True(true);
         }
 
+
+        /// <summary>
+        /// just to make sure that addDocument function works correctly and does not throw exception.
+        /// </summary>
         [Fact]
         public void AddDocumentTest()
         {
             var invertedIndex = new InvertedIndex();
             invertedIndex.AddDocument(new Document("doc"), "this is content in doc");
+            Assert.True(true);
         }
 
 

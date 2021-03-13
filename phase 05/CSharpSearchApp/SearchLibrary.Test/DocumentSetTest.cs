@@ -9,17 +9,27 @@ namespace SearchLibrary.Test
     [ExcludeFromCodeCoverage]
     public class DocumentSetTest
     {
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void DocumentSetCreationEmptyTest()
         {
             _ = new DocumentSet();
+            Assert.True(true);
         }
 
+
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void DocumentSetCreationInitTest()
         {
             var initializeSet = new HashSet<Document>() { new Document("doc1") , new Document("doc2")}; 
             _ = new DocumentSet(initializeSet);
+            Assert.True(true);
+
         }
 
         [Fact]
@@ -28,11 +38,15 @@ namespace SearchLibrary.Test
             Assert.Throws<ArgumentNullException>(() => _ = new DocumentSet((HashSet<Document>)null));
         }
 
+        /// <summary>
+        /// just to make sure that the proper constructor is implemented.
+        /// </summary>
         [Fact]
         public void DocumentSetCreationEnumerableTest()
         {
             var initializeSet = new Document[] { new Document("doc1"), new Document("doc2") };
             _ = new DocumentSet(initializeSet);
+            Assert.True(true);
         }
 
         [Fact]
