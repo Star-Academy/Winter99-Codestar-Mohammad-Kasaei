@@ -8,6 +8,8 @@ namespace SearchLibrary.Test
     [ExcludeFromCodeCoverage]
     public class QueryEngineTest
     {
+        QueryEngine engine;
+
         private static readonly Token repair = new("repair");
         private static readonly Token buy = new("buy");
         private static readonly Token car = new("car");
@@ -20,16 +22,9 @@ namespace SearchLibrary.Test
         private static readonly Document repairBike = new("repair_bike");
         private static readonly Document buyBike = new("buy_bike");
 
-
-        /// <summary>
-        /// just to make sure that the proper constructor is implemented.
-        /// </summary>
-        [Fact]
-        public void ConstructorTest()
+        public QueryEngineTest()
         {
-            InvertedIndex index = new();
-            _ = new QueryEngine(index);
-            Assert.True(true);
+            engine = new QueryEngine(GetMockedInvertedIndex());
         }
 
         private static InvertedIndex GetMockedInvertedIndex()
@@ -85,26 +80,9 @@ namespace SearchLibrary.Test
             return index.Object;
         }
 
-        /// <summary>
-        /// just to make sure that constructor and mock works correctly
-        /// </summary>
-        [Fact]
-        public void MockTest()
-        {
-            _ = new QueryEngine(GetMockedInvertedIndex());
-        }
-
-        [Fact]
-        public void AdvancedQueryAndOneExistingWordTest()
-        {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
-            engine.AdvancedSearch("car");
-        }
-
         [Fact]
         public void AdvancedQueryAndCarTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet(buyCar, repairBuyCar, repairCar);
             var actual = engine.AdvancedSearch("car");
             Assert.Equal(expected, actual);
@@ -113,7 +91,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryAndBikeTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet(repairBike, buyBike);
             var actual = engine.AdvancedSearch("bike");
             Assert.Equal(expected, actual);
@@ -122,7 +99,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryAndOneNotExistingWordTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet();
             var actual = engine.AdvancedSearch("test");
             Assert.Equal(expected, actual);
@@ -131,7 +107,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryAndTwoWordsEmptyResultTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet();
             var actual = engine.AdvancedSearch("test" , "car");
             Assert.Equal(expected, actual);
@@ -140,7 +115,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryAndTwoWordsNonEmptyResultTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet(buyCar,repairBuyCar);
             var actual = engine.AdvancedSearch("buy" , "car");
             Assert.Equal(expected, actual);
@@ -149,7 +123,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryORTwoWordsNonEmptyResultTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet(buyCar, repairBuyCar, repairCar, buyBike);
             var actual = engine.AdvancedSearch("+buy" , "+car");
             Assert.Equal(expected, actual);
@@ -158,7 +131,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryORTwoWordsFullSetTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet(buyCar, repairBuyCar, repairCar, buyBike , repairBike);
             var actual = engine.AdvancedSearch("+bike", "+car");
             Assert.Equal(expected, actual);
@@ -167,7 +139,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryNotOneWordTest()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet();
             var actual = engine.AdvancedSearch("-bike");
             Assert.Equal(expected, actual);
@@ -176,7 +147,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryComplex1Test()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet();
             var actual = engine.AdvancedSearch("+car", "+bike", "repair", "buy", "-repair");
             Assert.Equal(expected, actual);
@@ -185,7 +155,6 @@ namespace SearchLibrary.Test
         [Fact]
         public void AdvancedQueryComplex2Test()
         {
-            var engine = new QueryEngine(GetMockedInvertedIndex());
             var expected = new DocumentSet(repairCar);
             var actual = engine.AdvancedSearch("+car", "repair" , "-buy");
             Assert.Equal(expected, actual);
