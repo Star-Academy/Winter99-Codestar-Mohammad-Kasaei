@@ -19,8 +19,8 @@ namespace SearchLibrary.Test
         public TextFileReaderTest()
         {
             Directory.CreateDirectory(directoryName);
-            File.WriteAllText(@$"{directoryName}\{doc1Name}", fileContent1);
-            File.WriteAllText(@$"{directoryName}\{doc2Name}", fileContent2);
+            File.WriteAllText(@$"{directoryName}/{doc1Name}", fileContent1);
+            File.WriteAllText(@$"{directoryName}/{doc2Name}", fileContent2);
         }
 
         [Fact]
@@ -37,8 +37,8 @@ namespace SearchLibrary.Test
 
         public void Dispose()
         {
-            File.Delete(@$"{directoryName}\{doc1Name}");
-            File.Delete(@$"{directoryName}\{doc2Name}");
+            File.Delete(@$"{directoryName}/{doc1Name}");
+            File.Delete(@$"{directoryName}/{doc2Name}");
             Directory.Delete(directoryName);
         }
     }

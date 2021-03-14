@@ -6,7 +6,7 @@ namespace SearchConsoleApp
 {
     class Program
     {
-        private static readonly string DataPath = @"..\..\..\..\EnglishData";
+        private static readonly string DataPath = @"../../../../EnglishData";
         private static readonly Dictionary<Document, string> Files = TextFileReader.ReadAllFilesInDirectory(DataPath);
         private static readonly InvertedIndex InvertedIndex = new InvertedIndex(Files);
         private static readonly QueryEngine queryEngine = new QueryEngine(InvertedIndex);
