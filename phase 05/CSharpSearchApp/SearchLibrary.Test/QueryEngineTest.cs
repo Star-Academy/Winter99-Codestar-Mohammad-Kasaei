@@ -8,7 +8,7 @@ namespace SearchLibrary.Test
     [ExcludeFromCodeCoverage]
     public class QueryEngineTest
     {
-        QueryEngine engine;
+        private static QueryEngine engine;
 
         private static readonly Token repair = new("repair");
         private static readonly Token buy = new("buy");
@@ -22,7 +22,7 @@ namespace SearchLibrary.Test
         private static readonly Document repairBike = new("repair_bike");
         private static readonly Document buyBike = new("buy_bike");
 
-        public QueryEngineTest()
+        static QueryEngineTest()
         {
             engine = new QueryEngine(GetMockedInvertedIndex());
         }

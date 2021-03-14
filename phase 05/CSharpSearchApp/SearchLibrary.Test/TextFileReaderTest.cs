@@ -2,11 +2,12 @@
 using Xunit;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
+using System;
 
 namespace SearchLibrary.Test
 {
     [ExcludeFromCodeCoverage]
-    public class TextFileReaderTest
+    public class TextFileReaderTest : IDisposable
     {
 
         private readonly string fileContent1 = "This is the content of first file";
@@ -15,26 +16,16 @@ namespace SearchLibrary.Test
         private readonly string doc1Name = "doc1";
         private readonly string doc2Name = "doc2";
 
-
-        private void Setup()
+        public TextFileReaderTest()
         {
             Directory.CreateDirectory(directoryName);
             File.WriteAllText(@$"{directoryName}\{doc1Name}", fileContent1);
             File.WriteAllText(@$"{directoryName}\{doc2Name}", fileContent2);
         }
 
-        private void TearDown()
-        {
-            File.Delete(@$"{directoryName}\{doc1Name}");
-            File.Delete(@$"{directoryName}\{doc2Name}");
-            Directory.Delete(directoryName);
-        }
-
-
         [Fact]
         public void ReadAllFilesInFolderTest()
         {
-            Setup();
             var expected = new Dictionary<Document, string>()
             {
                 { new Document(doc1Name) , fileContent1},
@@ -42,7 +33,13 @@ namespace SearchLibrary.Test
             };
             var actual = TextFileReader.ReadAllFilesInDirectory(directoryName);
             Assert.Equal(expected, actual);
-            TearDown();
+        }
+
+        public void Dispose()
+        {
+            File.Delete(@$"{directoryName}\{doc1Name}");
+            File.Delete(@$"{directoryName}\{doc2Name}");
+            Directory.Delete(directoryName);
         }
     }
 }

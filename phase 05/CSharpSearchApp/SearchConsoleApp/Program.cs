@@ -6,14 +6,6 @@ namespace SearchConsoleApp
 {
     class Program
     {
-        private class CommandLineQueryEngine : CommandLine.ICommandLineCallback
-        {
-            public DocumentSet SearchWordsList(string[] words)
-            {
-                return queryEngine.AdvancedSearch(words);
-            }
-        }
-
         private static readonly string DataPath = @"..\..\..\..\EnglishData";
         private static readonly Dictionary<Document, string> Files = TextFileReader.ReadAllFilesInDirectory(DataPath);
         private static readonly InvertedIndex InvertedIndex = new(Files);

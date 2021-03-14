@@ -9,11 +9,6 @@ namespace SearchConsoleApp
 
         private readonly Func<string[], DocumentSet> handle;
 
-        public interface ICommandLineCallback
-        {
-            public DocumentSet SearchWordsList(string[] words);
-        }
-
         public CommandLine(Func<string[] , DocumentSet> handle)
         {
             this.handle = handle;
