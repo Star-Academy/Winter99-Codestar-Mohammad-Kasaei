@@ -25,7 +25,7 @@ namespace SearchLibrary
 
         public void AddDocument(Document document, string content)
         {
-            foreach(var token in Document.TokenizeContent(content))
+            foreach(var token in Tokenizer.TokenizeContent(content))
             {
                 if (!index.ContainsKey(token))
                 {

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace SearchLibrary
 {
@@ -28,14 +25,6 @@ namespace SearchLibrary
         public override string ToString()
         {
             return this.id;
-        }
-
-        public static HashSet<Token> TokenizeContent(string content)
-        {
-            var tokenStrings = Regex.Split(content, @"\W+");
-            var nonEmptyTokenStrings = tokenStrings.Where(stringValue => stringValue.Length > 0);
-            var tokenItems = nonEmptyTokenStrings.Select(tokenString => new Token(tokenString));
-            return new HashSet<Token>(tokenItems);
         }
     }
 }

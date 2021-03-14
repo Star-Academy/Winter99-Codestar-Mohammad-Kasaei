@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using Xunit;
 using System.Diagnostics.CodeAnalysis;
 
@@ -60,19 +59,6 @@ namespace SearchLibrary.Test
             var doc1 = new Document("testDocument1");
             var doc2 = new Document("testDocument2");
             Assert.NotEqual(doc1.GetHashCode(), doc2.GetHashCode());
-        }
-
-        [Fact]
-        public void TokenizeDocumentTest()
-        {
-            var expected = new HashSet<Token>()
-            {
-                new Token("this"),
-                new Token("is"),
-                new Token("me"),
-            };
-            var tokens = Document.TokenizeContent("this is me??????||||||");
-            Assert.Equal(expected, tokens);
         }
     }
 }

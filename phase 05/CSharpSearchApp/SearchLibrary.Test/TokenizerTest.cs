@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -47,6 +48,19 @@ namespace SearchLibrary.Test
         public void NormalizeTokenMoreInvalidCharsTest()
         {
             Assert.Equal("mohammad", Tokenizer.NormalizeToken("---++??)(Mohammad__"));
+        }
+
+        [Fact]
+        public void TokenizeDocumentTest()
+        {
+            var expected = new HashSet<Token>()
+            {
+                new Token("this"),
+                new Token("is"),
+                new Token("me"),
+            };
+            var tokens = Tokenizer.TokenizeContent("this is me??????||||||");
+            Assert.Equal(expected, tokens);
         }
     }
 }
