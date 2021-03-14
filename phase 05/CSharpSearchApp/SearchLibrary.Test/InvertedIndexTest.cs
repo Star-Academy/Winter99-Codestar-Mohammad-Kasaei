@@ -8,7 +8,7 @@ namespace SearchLibrary.Test
     [ExcludeFromCodeCoverage]
     public class InvertedIndexTest
     {
-        private readonly Dictionary<Document, string> sampleData = new()
+        private readonly Dictionary<Document, string> sampleData = new Dictionary<Document, string>()
             {
                 {new Document("doc1") , "this is content of the file one" },
                 {new Document("doc2") , "this is content of the file two" }

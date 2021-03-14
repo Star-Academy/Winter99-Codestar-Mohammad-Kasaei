@@ -219,7 +219,7 @@ namespace SearchLibrary.Test
         {
             var docSet = new DocumentSet(new HashSet<Document>
             { new Document("doc") });
-            Assert.Equal(new(), DocumentSet.Intersection(new(), docSet));
+            Assert.Equal(new DocumentSet(), DocumentSet.Intersection(new DocumentSet(), docSet));
         }
 
         [Fact]

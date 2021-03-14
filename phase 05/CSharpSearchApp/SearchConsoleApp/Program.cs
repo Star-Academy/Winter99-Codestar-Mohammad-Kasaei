@@ -8,12 +8,12 @@ namespace SearchConsoleApp
     {
         private static readonly string DataPath = @"..\..\..\..\EnglishData";
         private static readonly Dictionary<Document, string> Files = TextFileReader.ReadAllFilesInDirectory(DataPath);
-        private static readonly InvertedIndex InvertedIndex = new(Files);
-        private static readonly QueryEngine queryEngine = new(InvertedIndex);
+        private static readonly InvertedIndex InvertedIndex = new InvertedIndex(Files);
+        private static readonly QueryEngine queryEngine = new QueryEngine(InvertedIndex);
 
         static void Main(string[] args)
         {
-            CommandLine commandLine = new((words) => queryEngine.AdvancedSearch(words));
+            CommandLine commandLine = new CommandLine((words) => queryEngine.AdvancedSearch(words));
             commandLine.Start();
         }
     }

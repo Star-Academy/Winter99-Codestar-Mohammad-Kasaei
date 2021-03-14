@@ -13,7 +13,7 @@ namespace SearchLibrary
             var pairs = documents.Select(
                 doc => new KeyValuePair<Document , string>(doc, File.ReadAllText(@$"{folderPath}\{doc}"))
             );
-            return new(pairs);
+            return new Dictionary<Document, string>(pairs);
         }
     }
 }

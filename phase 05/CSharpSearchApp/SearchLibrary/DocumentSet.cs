@@ -70,7 +70,7 @@ namespace SearchLibrary
                     result.IntersectWith(documents);
                 }
             }
-            return result == null ? new() : new DocumentSet(result);
+            return result == null ? new DocumentSet() : new DocumentSet(result);
         }
 
         public override int GetHashCode()

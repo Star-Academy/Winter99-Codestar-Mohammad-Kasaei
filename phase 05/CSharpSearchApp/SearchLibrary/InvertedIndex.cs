@@ -9,10 +9,10 @@ namespace SearchLibrary
 
         public InvertedIndex(Dictionary<Document, string> inputData)
         {
-            this.index = new();
+            this.index = new Dictionary<Token, DocumentSet>();
             AddDocuments(inputData);
         }
-        public InvertedIndex():this(new())
+        public InvertedIndex():this(new Dictionary<Document, string>())
         {
         }
         public void AddDocuments(Dictionary<Document, string> documents)
@@ -29,7 +29,7 @@ namespace SearchLibrary
             {
                 if (!index.ContainsKey(token))
                 {
-                    index.Add(token, new());
+                    index.Add(token, new DocumentSet());
                 }
                 index[token].Add(document);
             }
@@ -37,7 +37,7 @@ namespace SearchLibrary
 
         public virtual DocumentSet SearchTokenInDocuments(Token token)
         {
-            return index.ContainsKey(token) ? index[token] : new();
+            return index.ContainsKey(token) ? index[token] : new DocumentSet();
         }
     }
 }

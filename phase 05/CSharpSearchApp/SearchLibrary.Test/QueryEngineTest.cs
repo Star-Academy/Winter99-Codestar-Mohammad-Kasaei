@@ -10,17 +10,17 @@ namespace SearchLibrary.Test
     {
         private static QueryEngine engine;
 
-        private static readonly Token repair = new("repair");
-        private static readonly Token buy = new("buy");
-        private static readonly Token car = new("car");
-        private static readonly Token bike = new("bike");
+        private static readonly Token repair = new Token("repair");
+        private static readonly Token buy = new Token("buy");
+        private static readonly Token car = new Token("car");
+        private static readonly Token bike = new Token("bike");
         
 
-        private static readonly Document repairCar = new("repair_car");
-        private static readonly Document buyCar = new("buy_car");
-        private static readonly Document repairBuyCar = new("repair_buy_car");
-        private static readonly Document repairBike = new("repair_bike");
-        private static readonly Document buyBike = new("buy_bike");
+        private static readonly Document repairCar = new Document("repair_car");
+        private static readonly Document buyCar = new Document("buy_car");
+        private static readonly Document repairBuyCar = new Document("repair_buy_car");
+        private static readonly Document repairBike = new Document("repair_bike");
+        private static readonly Document buyBike = new Document("buy_bike");
 
         static QueryEngineTest()
         {
