@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <TargetFramework>netstandard2.0</TargetFramework>
+      <TargetFramework>netcoreapp3.0</TargetFramework>
       <PackageId>StarAcademy.MohammadKasaei.SearchLibrary</PackageId>
       <Authors>Mohammad Kasaei</Authors>
       <Company>Star Academy</Company>
@@ -10,9 +10,5 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Moq" Version="4.16.1" />
-  </ItemGroup>
 
 </Project>
