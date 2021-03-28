@@ -6,9 +6,9 @@ namespace SearchLibrary
 {
     public class InvertedIndex
     {
-        private readonly Repository repository;
+        private readonly IRepository repository;
 
-        public InvertedIndex(Repository repository)
+        public InvertedIndex(IRepository repository)
         {
             this.repository = repository;
         }

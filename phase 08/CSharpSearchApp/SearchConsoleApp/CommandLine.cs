@@ -1,5 +1,6 @@
 ﻿using SearchLibrary;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace SearchConsoleApp
@@ -8,9 +9,9 @@ namespace SearchConsoleApp
     {
 
         private readonly Func<string[], DocumentSet> handle;
-        private readonly Func<string , bool> dataLoader;
+        private readonly Func<string, bool> dataLoader;
 
-        public CommandLine(Func<string[] , DocumentSet> queryHandler , Func<string , bool> dataLoader)
+        public CommandLine(Func<string[], DocumentSet> queryHandler, Func<string, bool> dataLoader)
         {
             this.handle = queryHandler;
             this.dataLoader = dataLoader;
@@ -19,54 +20,75 @@ namespace SearchConsoleApp
         public void Start()
         {
             PrintGreeting();
-            string path = AskToInsertData();
-            if(path!=null)
-            {
-                if (dataLoader(path))
+            AskYesNoQuestion("Index new documents ? ",
+                () =>
                 {
-                    Console.WriteLine("Data loaded successfully.");
-                }
-                else
+                    Console.WriteLine("Files directory : ");
+                    var line = Console.ReadLine();
+                    if (line.Length > 0 && dataLoader(line))
+                    {
+                        Console.WriteLine("Data loaded successfully.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Could not load data");
+                    }
+                },
+                () =>
                 {
-                    Console.WriteLine("Could not load data");
-                }
-            }
-            Console.WriteLine("Enter List of Queries:");
-            var line = Console.ReadLine();
-            var docs = handle(line.Split(" "));
-            PrintResults(docs);           
+                });
+            var words = InputNonEmptyLine("Enter List of Queries:");
+            var docs = handle(words.Split(" "));
+            PrintResults(docs);
+
         }
 
         private static void PrintGreeting()
         {
-            Console.WriteLine("Welcome to Search engine\n\n");
+            Console.WriteLine("Index search engine ...... \n\n");
         }
 
-        private static string AskToInsertData()
+        private static void AskYesNoQuestion(string question, Action yesAction, Action noAction)
         {
-            Console.WriteLine("Insert new data to database ? (y/n)");
-            var line = Console.ReadLine();
-            if(line.ToLower() == "y")
+            var actions = new Dictionary<char, Action>
             {
-                Console.Write("Enter path : ");
-                return Console.ReadLine();
+                { 'y', yesAction },
+                { 'n', noAction }
+            };
+
+            Console.WriteLine($"{question}(y/n) : ");
+            while (true)
+            {
+                var inputLine = Console.ReadLine();
+                if (inputLine.Length == 0)
+                    continue;
+
+                var ch = inputLine.ToLower().ToCharArray()[0];
+                if (actions.ContainsKey(ch))
+                {
+                    actions[ch].Invoke();
+                    return;
+                }
             }
-            return null;
+        }
+
+        private static string InputNonEmptyLine(string text)
+        {
+            Console.WriteLine(text);
+            while (true)
+            {
+                var line = Console.ReadLine();
+                if (line.Length > 0)
+                {
+                    return line;
+                }
+            }
         }
 
         private static void PrintResults(DocumentSet docs)
         {
-            if (docs.GetEnumerable().Any())
-            {
-                foreach (var doc in docs.GetEnumerable())
-                {
-                    Console.WriteLine(@$"Document {doc}");
-                }
-            }
-            else
-            {
-                Console.WriteLine(@$"No document found");
-            }
+            Console.WriteLine(docs.GetEnumerable().Any() ?
+                String.Join(" , ", docs.GetEnumerable()) : @$"No document found");
         }
     }
 }

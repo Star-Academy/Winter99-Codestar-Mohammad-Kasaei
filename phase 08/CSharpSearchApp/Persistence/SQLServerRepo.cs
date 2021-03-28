@@ -4,9 +4,15 @@ using System.Linq;
 
 namespace Persistence
 {
-    public class Repository
+    public class SQLServerRepo : IRepository
     {
-        private readonly SearchContext searchContext = new SearchContext();
+        private readonly SearchContext searchContext;
+
+        public SQLServerRepo(string serverPath, string dbName)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder().UseSqlServer($"Server={serverPath};Database={dbName};Trusted_Connection=True;");
+            this.searchContext = new SearchContext(optionsBuilder.Options);
+        }
 
         public IEnumerable<string> GetDocumentsWithToken(string tokenString)
         {
@@ -15,10 +21,12 @@ namespace Persistence
                 .Where(token => token.Value == tokenString)
                 .SingleOrDefault();
 
-            if (token != null && token.TokenDocumentModels != null && token.TokenDocumentModels.Count > 0)
+            if (token != null && token.TokenDocumentModels.Count > 0)
             {
                 return token.TokenDocumentModels
-                    .Select(tokenDocumentModel => searchContext.Documents.Find(tokenDocumentModel.DocumentModelId).Name)
+                    .Select(
+                        tokenDocumentModel => searchContext.Documents.Find(tokenDocumentModel.DocumentModelId).Name
+                    )
                     .ToList();
             }
             else
