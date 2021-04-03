@@ -2,12 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Castle.Core.Internal;
 
 namespace SearchConsoleApp
 {
     public class CommandLine
     {
-
         private readonly Func<string[], DocumentSet> handle;
         private readonly Func<string, bool> dataLoader;
 
@@ -25,7 +25,7 @@ namespace SearchConsoleApp
                 {
                     Console.WriteLine("Files directory : ");
                     var line = Console.ReadLine();
-                    if (line.Length > 0 && dataLoader(line))
+                    if (line.IsNullOrEmpty() && dataLoader(line))
                     {
                         Console.WriteLine("Data loaded successfully.");
                     }
@@ -34,13 +34,10 @@ namespace SearchConsoleApp
                         Console.WriteLine("Could not load data");
                     }
                 },
-                () =>
-                {
-                });
+                () => { });
             var words = InputNonEmptyLine("Enter List of Queries:");
             var docs = handle(words.Split(" "));
             PrintResults(docs);
-
         }
 
         private static void PrintGreeting()
@@ -52,23 +49,21 @@ namespace SearchConsoleApp
         {
             var actions = new Dictionary<char, Action>
             {
-                { 'y', yesAction },
-                { 'n', noAction }
+                {'y', yesAction},
+                {'n', noAction}
             };
 
             Console.WriteLine($"{question}(y/n) : ");
             while (true)
             {
                 var inputLine = Console.ReadLine();
-                if (inputLine.Length == 0)
+                if (inputLine.IsNullOrEmpty())
                     continue;
-
                 var ch = inputLine.ToLower().ToCharArray()[0];
-                if (actions.ContainsKey(ch))
-                {
-                    actions[ch].Invoke();
-                    return;
-                }
+                if (!actions.ContainsKey(ch))
+                    continue;
+                actions[ch].Invoke();
+                return;
             }
         }
 
@@ -78,7 +73,7 @@ namespace SearchConsoleApp
             while (true)
             {
                 var line = Console.ReadLine();
-                if (line.Length > 0)
+                if (!line.IsNullOrEmpty())
                 {
                     return line;
                 }
@@ -87,8 +82,9 @@ namespace SearchConsoleApp
 
         private static void PrintResults(DocumentSet docs)
         {
-            Console.WriteLine(docs.GetEnumerable().Any() ?
-                String.Join(" , ", docs.GetEnumerable()) : @$"No document found");
+            Console.WriteLine(docs.GetEnumerable().Any()
+                ? String.Join(" , ", docs.GetEnumerable())
+                : @$"No document found");
         }
     }
 }

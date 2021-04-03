@@ -6,7 +6,7 @@ namespace Persistence
 {
     public interface IRepository
     {
-        public IEnumerable<string> GetDocumentsWithToken(string tokenString);
-        public void AddData(string documentName, string content, IEnumerable<string> tokens);
+        IEnumerable<string> GetDocumentsWithToken(string tokenString);
+        void AddData(string documentName, string content, IEnumerable<string> tokens);
     }
 }

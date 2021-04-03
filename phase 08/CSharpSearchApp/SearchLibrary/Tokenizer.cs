@@ -7,21 +7,22 @@ namespace SearchLibrary
 {
     public class Tokenizer
     {
-        private static readonly string invalidRegex = @"[(\W+)(_)]";
+        private const string InvalidRegex = @"[(\W+)(_)]";
+        private const string ContentTokenizationRegex = @"\W+";
 
-        public static string NormalizeToken(String rawString)
+        public static string NormalizeToken(string rawString)
         {
             if (rawString == null)
             {
                 throw new ArgumentNullException(nameof(rawString));
             }
 
-            return Regex.Replace(rawString.ToLower(), invalidRegex, "");
+            return Regex.Replace(rawString.ToLower(), InvalidRegex, "");
         }
 
         public static HashSet<Token> TokenizeContent(string content)
         {
-            var tokenStrings = Regex.Split(content, @"\W+");
+            var tokenStrings = Regex.Split(content, ContentTokenizationRegex);
             var nonEmptyTokenStrings = tokenStrings.Where(stringValue => stringValue.Length > 0);
             var tokenItems = nonEmptyTokenStrings.Select(tokenString => new Token(tokenString));
             return new HashSet<Token>(tokenItems);
