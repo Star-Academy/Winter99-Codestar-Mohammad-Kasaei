@@ -8,19 +8,20 @@ namespace SearchLibrary
     {
         private readonly HashSet<Document> documents;
 
-        public DocumentSet():this(Array.Empty<Document>())
+        public DocumentSet() : this(Array.Empty<Document>())
         {
         }
 
-        public DocumentSet(params Document[] documents):this(documents.AsEnumerable())
+        public DocumentSet(params Document[] documents) : this(documents.AsEnumerable())
         {
         }
 
         public DocumentSet(HashSet<Document> initializeSet)
         {
-            this.documents = initializeSet ?? throw new ArgumentNullException(nameof(initializeSet));
+            documents = initializeSet ?? throw new ArgumentNullException(nameof(initializeSet));
         }
-        public DocumentSet(IEnumerable<Document> initializer):this(new HashSet<Document>(initializer))
+
+        public DocumentSet(IEnumerable<Document> initializer) : this(new HashSet<Document>(initializer))
         {
         }
 
@@ -39,14 +40,15 @@ namespace SearchLibrary
             if (documentSets == null)
                 throw new ArgumentNullException(nameof(documentSets));
             var docs = new HashSet<Document>();
-            foreach(var set in documentSets)
+            foreach (var set in documentSets)
             {
                 docs.UnionWith(set.documents);
             }
+
             return new DocumentSet(docs);
         }
 
-        public static DocumentSet Subtract(DocumentSet baseDocSet , DocumentSet excluding)
+        public static DocumentSet Subtract(DocumentSet baseDocSet, DocumentSet excluding)
         {
             return new DocumentSet(baseDocSet.documents.Except(excluding.documents));
         }
@@ -59,7 +61,7 @@ namespace SearchLibrary
         public static DocumentSet Intersection(IEnumerable<DocumentSet> documentSets)
         {
             HashSet<Document> result = null;
-            foreach(var documents in documentSets.Select(docSet=> docSet.documents))
+            foreach (var documents in documentSets.Select(docSet => docSet.documents))
             {
                 if (result == null)
                 {
@@ -70,6 +72,7 @@ namespace SearchLibrary
                     result.IntersectWith(documents);
                 }
             }
+
             return result == null ? new DocumentSet() : new DocumentSet(result);
         }
 
@@ -80,14 +83,14 @@ namespace SearchLibrary
 
         public bool Has(Document document)
         {
-            return this.documents.Contains(document);
+            return documents.Contains(document);
         }
 
         public void Add(Document document)
         {
-            this.documents.Add(document);
+            documents.Add(document);
         }
-        
+
         public bool IsEmpty()
         {
             return documents.Count == 0;

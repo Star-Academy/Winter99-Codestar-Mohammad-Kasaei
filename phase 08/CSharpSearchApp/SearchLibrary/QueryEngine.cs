@@ -14,9 +14,9 @@ namespace SearchLibrary
 
         public DocumentSet AdvancedSearch(params string[] inputValues)
         {
-            var orWords = inputValues.Where(word => word.StartsWith("+"));
-            var notWords = inputValues.Where(word => word.StartsWith("-"));
-            var andWords = inputValues.Except(orWords).Except(notWords);
+            var orWords = new List<string>(inputValues.Where(word => word.StartsWith("+")));
+            var notWords = new List<string>(inputValues.Where(word => word.StartsWith("-")));
+            var andWords = new List<string>(inputValues.Except(orWords).Except(notWords));
 
             var orTokens = orWords.Select(word => new Token(word[1..]));
             var andTokens = andWords.Select(word => new Token(word));
@@ -26,7 +26,8 @@ namespace SearchLibrary
         }
 
 
-        public DocumentSet AdvancedSearch(IEnumerable<Token> orTokens , IEnumerable<Token> andTokens, IEnumerable<Token> notTokens)
+        private DocumentSet AdvancedSearch(IEnumerable<Token> orTokens, IEnumerable<Token> andTokens,
+            IEnumerable<Token> notTokens)
         {
             var orDocs = DocumentSet.Union(orTokens.Select(token => index.SearchTokenInDocuments(token)));
             var andDocs = DocumentSet.Intersection(andTokens.Select(token => index.SearchTokenInDocuments(token)));
@@ -41,6 +42,7 @@ namespace SearchLibrary
             {
                 result = DocumentSet.Intersection(orDocs, andDocs);
             }
+
             result = DocumentSet.Subtract(result, notDocs);
             return result;
         }

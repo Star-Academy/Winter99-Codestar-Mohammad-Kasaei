@@ -4,28 +4,29 @@ using System;
 
 namespace SearchConsoleApp
 {
-    class Program
+    internal static class Program
     {
-        private static readonly InvertedIndex InvertedIndex = new InvertedIndex(new SQLServerRepo(".", "searchDB"));
-        private static readonly QueryEngine queryEngine = new QueryEngine(InvertedIndex);
-        private static readonly CommandLine commandLine = new CommandLine(
-                (words) => { return queryEngine.AdvancedSearch(words); },
-                (path) =>
-                {
-                    try
-                    {
-                        var files = TextFileReader.ReadAllFilesInDirectory(path);
-                        InvertedIndex.AddDocuments(files);
-                        return true;
-                    }
-                    catch (Exception)
-                    {
-                        return false;
-                    }
-                }
-                );
+        private static readonly InvertedIndex invertedIndex = new InvertedIndex(new SqlServerRepo(".", "searchDB"));
+        private static readonly QueryEngine queryEngine = new QueryEngine(invertedIndex);
 
-        static void Main(string[] args)
+        private static readonly CommandLine commandLine = new CommandLine(
+            words => queryEngine.AdvancedSearch(words),
+            path =>
+            {
+                try
+                {
+                    var files = TextFileReader.ReadAllFilesInDirectory(path);
+                    invertedIndex.AddDocuments(files);
+                    return true;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+        );
+
+        private static void Main()
         {
             commandLine.Start();
         }

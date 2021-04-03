@@ -11,16 +11,19 @@ namespace SearchLibrary
             if (tokenString == null)
             {
                 throw new ArgumentNullException(nameof(tokenString));
-            }else if ( tokenString.Length == 0)
+            }
+
+            if (tokenString.Length == 0)
             {
                 throw new ArgumentException("Input string is empty");
             }
+
             this.tokenString = Tokenizer.NormalizeToken(tokenString);
         }
 
         public override bool Equals(object obj)
         {
-            return obj is Token token && token.ToString().Equals(this.tokenString);
+            return obj is Token token && token.ToString().Equals(tokenString);
         }
 
         public override int GetHashCode()
@@ -30,7 +33,7 @@ namespace SearchLibrary
 
         public override string ToString()
         {
-            return this.tokenString;
+            return tokenString;
         }
     }
 }

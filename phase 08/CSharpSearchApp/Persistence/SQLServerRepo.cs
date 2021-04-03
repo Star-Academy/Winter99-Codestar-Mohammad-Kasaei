@@ -4,22 +4,23 @@ using System.Linq;
 
 namespace Persistence
 {
-    public class SQLServerRepo : IRepository
+    public class SqlServerRepo : IRepository
     {
         private readonly SearchContext searchContext;
 
-        public SQLServerRepo(string serverPath, string dbName)
+        public SqlServerRepo(string serverPath, string dbName)
         {
-            var optionsBuilder = new DbContextOptionsBuilder().UseSqlServer($"Server={serverPath};Database={dbName};Trusted_Connection=True;");
-            this.searchContext = new SearchContext(optionsBuilder.Options);
+            var optionsBuilder =
+                new DbContextOptionsBuilder().UseSqlServer(
+                    $"Server={serverPath};Database={dbName};Trusted_Connection=True;");
+            searchContext = new SearchContext(optionsBuilder.Options);
         }
 
         public IEnumerable<string> GetDocumentsWithToken(string tokenString)
         {
             var token = searchContext.Tokens
-                .Include(token => token.TokenDocumentModels)
-                .Where(token => token.Value == tokenString)
-                .SingleOrDefault();
+                .Include(tokenObj => tokenObj.TokenDocumentModels)
+                .SingleOrDefault(tokenObj => tokenObj.Value == tokenString);
 
             if (token != null && token.TokenDocumentModels.Count > 0)
             {
@@ -29,27 +30,25 @@ namespace Persistence
                     )
                     .ToList();
             }
-            else
-            {
-                return new List<string>();
-            }
+
+            return new List<string>();
         }
 
         public void AddData(string documentName, string content, IEnumerable<string> tokens)
         {
-            var doc = searchContext.Documents.Where(doc => doc.Name == documentName).SingleOrDefault();
+            var doc = searchContext.Documents.SingleOrDefault(documentObj => documentObj.Name == documentName);
             if (doc == null)
             {
-                doc = new DocumentModel() { Name = documentName, Content = content };
+                doc = new DocumentModel {Name = documentName, Content = content};
                 searchContext.Add(doc);
             }
 
             foreach (var tokenStr in tokens)
             {
-                var token = searchContext.Tokens.Where(token => token.Value == tokenStr).SingleOrDefault();
+                var token = searchContext.Tokens.SingleOrDefault(tokenObj => tokenObj.Value == tokenStr);
                 if (token == null)
                 {
-                    token = new TokenModel()
+                    token = new TokenModel
                     {
                         Value = tokenStr
                     };
@@ -57,18 +56,19 @@ namespace Persistence
                 }
 
                 var tokenDocModel = searchContext.TokenDocuments.Find(token.Id, doc.Id);
-                if (tokenDocModel == null)
+                if (tokenDocModel != null)
+                    continue;
+
+                tokenDocModel = new TokenDocumentModel
                 {
-                    tokenDocModel = new TokenDocumentModel()
-                    {
-                        DocumentModel = doc,
-                        DocumentModelId = doc.Id,
-                        TokenModel = token,
-                        TokenModelId = token.Id
-                    };
-                    searchContext.TokenDocuments.Add(tokenDocModel);
-                }
+                    DocumentModel = doc,
+                    DocumentModelId = doc.Id,
+                    TokenModel = token,
+                    TokenModelId = token.Id
+                };
+                searchContext.TokenDocuments.Add(tokenDocModel);
             }
+
             searchContext.SaveChanges();
         }
     }

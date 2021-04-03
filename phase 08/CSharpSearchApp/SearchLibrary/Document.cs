@@ -24,7 +24,7 @@ namespace SearchLibrary
 
         public override string ToString()
         {
-            return this.id;
+            return id;
         }
     }
 }

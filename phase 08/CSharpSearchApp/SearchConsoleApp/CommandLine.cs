@@ -8,12 +8,12 @@ namespace SearchConsoleApp
 {
     public class CommandLine
     {
-        private readonly Func<string[], DocumentSet> handle;
+        private readonly Func<string[], DocumentSet> queryHandler;
         private readonly Func<string, bool> dataLoader;
 
         public CommandLine(Func<string[], DocumentSet> queryHandler, Func<string, bool> dataLoader)
         {
-            this.handle = queryHandler;
+            this.queryHandler = queryHandler;
             this.dataLoader = dataLoader;
         }
 
@@ -36,7 +36,7 @@ namespace SearchConsoleApp
                 },
                 () => { });
             var words = InputNonEmptyLine("Enter List of Queries:");
-            var docs = handle(words.Split(" "));
+            var docs = queryHandler(words.Split(" "));
             PrintResults(docs);
         }
 
@@ -83,8 +83,8 @@ namespace SearchConsoleApp
         private static void PrintResults(DocumentSet docs)
         {
             Console.WriteLine(docs.GetEnumerable().Any()
-                ? String.Join(" , ", docs.GetEnumerable())
-                : @$"No document found");
+                ? string.Join(" , ", docs.GetEnumerable())
+                : $"No document found");
         }
     }
 }

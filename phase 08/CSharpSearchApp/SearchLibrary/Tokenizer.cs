@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace SearchLibrary
 {
-    public class Tokenizer
+    public static class Tokenizer
     {
         private const string InvalidRegex = @"[(\W+)(_)]";
         private const string ContentTokenizationRegex = @"\W+";

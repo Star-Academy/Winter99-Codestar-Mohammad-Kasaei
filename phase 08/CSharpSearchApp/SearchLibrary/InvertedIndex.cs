@@ -15,9 +15,9 @@ namespace SearchLibrary
         
         public void AddDocuments(Dictionary<Document, string> documents)
         {
-            foreach (var entry in documents)
+            foreach (var (key, value) in documents)
             {
-                AddDocument(entry.Key, entry.Value);
+                AddDocument(key, value);
             }
         }
 
