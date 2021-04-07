@@ -25,16 +25,15 @@ namespace ConsoleApp
                     Console.WriteLine("App Settings loaded successfully");
                     break;
                 }
-                else
-                {
-                    Console.WriteLine("Could not load settings file");
-                }
+
+                Console.WriteLine("Could not load settings file");
             }
 
             while (true)
             {
                 var indexName = AskStringQuestion("Enter index name : ");
-                if (_callbacks.IndexCreation(indexName))
+                var create = AskYesNoQuestion("Create the index (y) or already exists(n) ? ");
+                if (_callbacks.IndexCreation(indexName, create))
                 {
                     Console.WriteLine("Index created");
                     break;

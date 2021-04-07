@@ -30,12 +30,12 @@ namespace ConsoleApp
             }
         }
 
-        public bool IndexCreation(string indexName)
+        public bool IndexCreation(string indexName, bool forceCreate)
         {
             try
             {
                 _client = new PeopleClient(_appSettings.Server, _appSettings.Port, indexName, true);
-                return _client.CreateIndex();
+                return forceCreate ? _client.CreateIndex() : _client.CheckConnection();
             }
             catch (Exception)
             {
