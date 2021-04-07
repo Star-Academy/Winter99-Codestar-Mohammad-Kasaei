@@ -55,5 +55,17 @@ namespace PeopleClientLibrary
             var response = Client.Indices.Create(IndexName, CreateMapping);
             return response.Acknowledged;
         }
+
+        public string CheckHealth()
+        {
+            var response = Client.Cluster.Health();
+            return response.Status.ToString();
+        }
+
+        public string Check()
+        {
+            var response = Client.Cluster.Health();
+            return response.Status.ToString();
+        }
     }
 }

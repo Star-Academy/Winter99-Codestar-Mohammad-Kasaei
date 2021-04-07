@@ -35,7 +35,7 @@ namespace ConsoleApp
             try
             {
                 _client = new PeopleClient(_appSettings.Server, _appSettings.Port, indexName, true);
-                return true;
+                return _client.CreateIndex();
             }
             catch (Exception)
             {
@@ -45,9 +45,16 @@ namespace ConsoleApp
 
         public bool BulkInsertFromFile(string filePath)
         {
-            var content = File.ReadAllText(filePath);
-            var people = JsonConvert.DeserializeObject<List<Person>>(content);
-            return _client.Bulk(people);
+            try
+            {
+                var content = File.ReadAllText(filePath);
+                var people = JsonConvert.DeserializeObject<List<Person>>(content);
+                return _client.Bulk(people);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool Terminate()
