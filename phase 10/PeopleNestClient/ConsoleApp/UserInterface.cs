@@ -2,11 +2,11 @@
 {
     public abstract class UserInterface
     {
-        protected readonly IUserCallbacks _callbacks;
+        protected readonly IUserCallbacks Callbacks;
 
         protected UserInterface(IUserCallbacks callbacks)
         {
-            _callbacks = callbacks;
+            Callbacks = callbacks;
         }
 
         public abstract void Start();

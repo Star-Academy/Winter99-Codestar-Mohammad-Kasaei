@@ -1,4 +1,8 @@
-﻿namespace ConsoleApp
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using PeopleClientLibrary;
+
+namespace ConsoleApp
 {
     public interface IUserCallbacks
     {
@@ -6,6 +10,8 @@
         bool Init(string appSettingsPath);
         bool IndexCreation(string indexName, bool forceCreate);
         bool BulkInsertFromFile(string filePath);
+        ImmutableList<Person> SearchPeople(string[] args);
+        IDictionary<int, long> AgeReport();
         bool Terminate();
     }
 }

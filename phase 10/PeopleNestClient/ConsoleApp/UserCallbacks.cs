@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using Newtonsoft.Json;
 using PeopleClientLibrary;
 
@@ -55,6 +57,68 @@ namespace ConsoleApp
             {
                 return false;
             }
+        }
+
+        public ImmutableList<Person> SearchPeople(string[] args)
+        {
+            string NextArg(ref int i)
+            {
+                return args[i++];
+            }
+
+            var argPointer = 0;
+            switch (args[argPointer++])
+            {
+                case "all":
+                    return _client.SearchAll();
+                case "name_fuzzy":
+                {
+                    var phrase = NextArg(ref argPointer);
+                    var fuzziness = int.Parse(NextArg(ref argPointer));
+                    return _client.SearchNameFuzzy(phrase, fuzziness);
+                }
+                case "eye_color_term":
+                {
+                    var phrase = NextArg(ref argPointer);
+                    return _client.SearchEyeColorTerm(phrase);
+                }
+                case "eye_color_terms":
+                {
+                    var phrase = args.Skip(argPointer).ToList();
+                    return _client.SearchEyeColorTerms(phrase);
+                }
+                case "age_range":
+                {
+                    var min = int.Parse(NextArg(ref argPointer));
+                    var max = int.Parse(NextArg(ref argPointer));
+                    return _client.SearchAgeRange(min, max);
+                }
+                case "distance":
+                {
+                    var lat = int.Parse(NextArg(ref argPointer));
+                    var lon = int.Parse(NextArg(ref argPointer));
+                    var distance = int.Parse(NextArg(ref argPointer));
+                    return _client.SearchLocationDistance(lat, lon, distance);
+                }
+                case "full_text":
+                {
+                    var phrase = NextArg(ref argPointer);
+                    return _client.SearchFullTexts(phrase);
+                }
+                case "name_age":
+                {
+                    var name = NextArg(ref argPointer);
+                    var age = int.Parse(NextArg(ref argPointer));
+                    return _client.SearchNameAndAge(name, age);
+                }
+            }
+
+            return null;
+        }
+
+        public IDictionary<int, long> AgeReport()
+        {
+            return _client.AgeReport();
         }
 
         public bool Terminate()

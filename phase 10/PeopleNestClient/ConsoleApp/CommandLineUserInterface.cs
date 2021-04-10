@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConsoleApp
 {
@@ -14,13 +15,13 @@ namespace ConsoleApp
             Console.WriteLine("Welcome you are using people nest client");
             while (true)
             {
-                var defaultAppSettingsPath = _callbacks.DefaultAppSettingsPath();
+                var defaultAppSettingsPath = Callbacks.DefaultAppSettingsPath();
                 var useDefaultAppSettingsPath =
                     AskYesNoQuestion($"Use Default AppSettings.json ({defaultAppSettingsPath}) ?");
                 var path = useDefaultAppSettingsPath
                     ? defaultAppSettingsPath
                     : AskStringQuestion("Enter AppSettings.json path");
-                if (_callbacks.Init(path))
+                if (Callbacks.Init(path))
                 {
                     Console.WriteLine("App Settings loaded successfully");
                     break;
@@ -33,9 +34,9 @@ namespace ConsoleApp
             {
                 var indexName = AskStringQuestion("Enter index name : ");
                 var create = AskYesNoQuestion("Create the index (y) or already exists(n) ? ");
-                if (_callbacks.IndexCreation(indexName, create))
+                if (Callbacks.IndexCreation(indexName, create))
                 {
-                    Console.WriteLine("Index created");
+                    Console.WriteLine("Index OK");
                     break;
                 }
 
@@ -49,7 +50,7 @@ namespace ConsoleApp
                     "bulk", () =>
                     {
                         var path = AskStringQuestion($"Enter file path relative to {Environment.CurrentDirectory} : ");
-                        Console.WriteLine(_callbacks.BulkInsertFromFile(path)
+                        Console.WriteLine(Callbacks.BulkInsertFromFile(path)
                             ? "File loaded and inserted correctly"
                             : "Error happened with the file");
                     }
@@ -57,7 +58,7 @@ namespace ConsoleApp
                 {
                     "exit", () =>
                     {
-                        if (_callbacks.Terminate())
+                        if (Callbacks.Terminate())
                         {
                             isRunning = false;
                         }
@@ -65,6 +66,34 @@ namespace ConsoleApp
                         {
                             Console.WriteLine("Could not terminate the program due to operation");
                         }
+                    }
+                },
+                {
+                    "search", () =>
+                    {
+                        var response = Callbacks.SearchPeople(AskStringQuestion("Enter search args : ").Split(" "));
+                        if (response is null)
+                        {
+                            Console.WriteLine("Response is null");
+                        }
+                        else if (response.IsEmpty)
+                        {
+                            Console.WriteLine("Response is empty");
+                        }
+                        else
+                        {
+                            Console.WriteLine(string.Join("\n", response.Select(p => p.Name)));
+                        }
+                    }
+                },
+                {
+                    "report_age", () =>
+                    {
+                        var report = Callbacks.AgeReport();
+                        var recordLines = report.Select(rec => $"{rec.Key}\t{rec.Value}");
+                        var text = string.Join("\n", recordLines);
+                        Console.Write(text);
+                        Console.Write("\n\n");
                     }
                 }
             };
