@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Nest;
+using PeopleClientLibrary.validator;
 
 namespace PeopleClientLibrary
 {
@@ -25,13 +26,15 @@ namespace PeopleClientLibrary
 
         public bool CheckConnection()
         {
-            var response = Client.Ping();
+            var response = Client.Ping().Validate();
             return response.ApiCall.Success;
         }
 
         public bool IndexDocument(T person)
         {
-            var response = Client.IndexDocument(person);
+            var response = Client
+                .IndexDocument(person)
+                .Validate();
             return response.IsValid;
         }
 
@@ -46,25 +49,26 @@ namespace PeopleClientLibrary
                 );
             }
 
-            var response = Client.Bulk(bulkDescriptor);
+            var response = Client
+                .Bulk(bulkDescriptor)
+                .Validate();
             return response.IsValid;
         }
 
         public bool CreateIndex()
         {
-            var response = Client.Indices.Create(IndexName, CreateMapping);
+            var response = Client
+                .Indices
+                .Create(IndexName, CreateMapping)
+                .Validate();
             return response.Acknowledged;
         }
 
         public string CheckHealth()
         {
-            var response = Client.Cluster.Health();
-            return response.Status.ToString();
-        }
-
-        public string Check()
-        {
-            var response = Client.Cluster.Health();
+            var response = Client
+                .Cluster
+                .Health();
             return response.Status.ToString();
         }
     }

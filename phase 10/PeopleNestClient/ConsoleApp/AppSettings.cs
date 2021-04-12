@@ -6,16 +6,14 @@ namespace ConsoleApp
 {
     public class AppSettings
     {
-        public AppSettings(int port, string server, string defaultSourceFilePath)
+        public AppSettings(int port, string server)
         {
             Port = port;
             Server = server;
-            DefaultSourceFilePath = defaultSourceFilePath;
         }
 
         public string Server { get; }
         public int Port { get; }
-        public string DefaultSourceFilePath { get; }
 
         public static AppSettings CreateFromFile(string filePath)
         {

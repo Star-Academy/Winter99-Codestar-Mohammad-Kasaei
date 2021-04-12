@@ -39,8 +39,9 @@ namespace ConsoleApp
                 _client = new PeopleClient(_appSettings.Server, _appSettings.Port, indexName, true);
                 return forceCreate ? _client.CreateIndex() : _client.CheckConnection();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
