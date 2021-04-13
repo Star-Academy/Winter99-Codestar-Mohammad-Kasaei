@@ -68,8 +68,8 @@ namespace ConsoleApp
                         var notTerms = allWords.Where(w => Regex.IsMatch(w, @"[-].+")).ToList();
                         var andTerms = allWords.Except(orTerms).Except(notTerms).ToList();
 
-                        var notWords = orTerms.Select(w => w.Trim('+')).ToArray();
-                        var orWords = orTerms.Select(w => w.Trim('+', '-')).ToArray();
+                        var notWords = notTerms.Select(w => w.Trim('-')).ToArray();
+                        var orWords = orTerms.Select(w => w.Trim('+')).ToArray();
                         var andWords = andTerms.ToArray();
 
                         var response = Callbacks.AdvancedQuery(andWords, orWords, notWords);
