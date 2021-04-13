@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using ConsoleApp.validator;
 using Nest;
 
@@ -72,34 +71,15 @@ namespace ConsoleApp
                 .Validate();
         }
 
-        public ImmutableList<Document> AdvancedQuery(IEnumerable<string> andWords, IEnumerable<string> orWords,
-            IEnumerable<string> notWords)
+        public ImmutableList<Document> AdvancedQuery(
+            IEnumerable<string> andWords,
+            IEnumerable<string> orWords,
+            IEnumerable<string> notWords
+        )
         {
-            static IEnumerable<QueryContainer> WordListToQuery(IEnumerable<string> words)
-            {
-                return words.Select(word =>
-                        new QueryContainer(
-                            new MatchQuery
-                            {
-                                Field = Infer.Field<Document>(p => p.Content),
-                                Query = word
-                            }
-                        )
-                    )
-                    .ToList();
-            }
-
-            var queryRequest = new SearchRequest<Document>
-            {
-                Query = new BoolQuery
-                {
-                    Must = WordListToQuery(andWords),
-                    Should = WordListToQuery(orWords),
-                    MustNot = WordListToQuery(notWords)
-                }
-            };
+            var query = QueryBuilder.WordsToNestQueryObject(andWords, orWords, notWords);
             return _client
-                .Search<Document>(queryRequest)
+                .Search<Document>(query)
                 .Validate()
                 .Documents
                 .ToImmutableList();

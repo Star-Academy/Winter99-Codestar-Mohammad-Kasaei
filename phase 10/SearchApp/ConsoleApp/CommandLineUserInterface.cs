@@ -17,14 +17,13 @@ namespace ConsoleApp
         {
             Greeting();
             Initialization();
-
             Commands();
         }
 
         private void Commands()
         {
             var isRunning = true;
-            var menu = new Dictionary<string, Action>()
+            var menu = new Dictionary<string, Action>
             {
                 {
                     "insert_folder", () =>
@@ -63,14 +62,7 @@ namespace ConsoleApp
                     "search", () =>
                     {
                         var queryString = AskStringQuestion("Enter list of words (space separated) : ");
-                        var allWords = Regex.Split(queryString, @"[ ]+");
-                        var orTerms = allWords.Where(w => Regex.IsMatch(w, @"[+].+")).ToList();
-                        var notTerms = allWords.Where(w => Regex.IsMatch(w, @"[-].+")).ToList();
-                        var andTerms = allWords.Except(orTerms).Except(notTerms).ToList();
-
-                        var notWords = notTerms.Select(w => w.Trim('-')).ToArray();
-                        var orWords = orTerms.Select(w => w.Trim('+')).ToArray();
-                        var andWords = andTerms.ToArray();
+                        SplitWordsToGroups(queryString, out var notWords, out var orWords, out var andWords);
 
                         var response = Callbacks.AdvancedQuery(andWords, orWords, notWords);
                         if (response is null)
@@ -100,7 +92,7 @@ namespace ConsoleApp
                             Console.WriteLine("Could not terminate the program due to operation");
                         }
                     }
-                },
+                }
             };
             var menuString = "Actions : \n\t\t" + string.Join("\n\t\t", menu.Keys) + "\n";
             while (isRunning)
@@ -115,6 +107,22 @@ namespace ConsoleApp
                     Console.WriteLine("invalid Command");
                 }
             }
+        }
+
+        private static void SplitWordsToGroups(string queryString,
+            out string[] notWords,
+            out string[] orWords,
+            out string[] andWords
+        )
+        {
+            var allWords = Regex.Split(queryString, @"[ ]+");
+            var orTerms = allWords.Where(w => Regex.IsMatch(w, @"[+].+")).ToList();
+            var notTerms = allWords.Where(w => Regex.IsMatch(w, @"[-].+")).ToList();
+            var andTerms = allWords.Except(orTerms).Except(notTerms).ToList();
+
+            notWords = notTerms.Select(w => w.Trim('-')).ToArray();
+            orWords = orTerms.Select(w => w.Trim('+')).ToArray();
+            andWords = andTerms.ToArray();
         }
 
         private static string TruncateStringWithEllipse(string src, int maxLength = MaxPrintContentLength)
