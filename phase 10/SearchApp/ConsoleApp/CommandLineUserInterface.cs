@@ -9,6 +9,11 @@ namespace ConsoleApp
     {
         private const int MaxPrintContentLength = 100;
 
+        private const string SplitRegex = @"[ ]+";
+        private const string OrRegex = @"[+].+";
+        private static readonly Func<string, string> WordsTrimmer = w => w.Trim('-').Trim('+');
+        private const string NotRegex = @"[-].+";
+
         public CommandLineUserInterface(IUserCallbacks callbacks) : base(callbacks)
         {
         }
@@ -115,13 +120,13 @@ namespace ConsoleApp
             out string[] andWords
         )
         {
-            var allWords = Regex.Split(queryString, @"[ ]+");
-            var orTerms = allWords.Where(w => Regex.IsMatch(w, @"[+].+")).ToList();
-            var notTerms = allWords.Where(w => Regex.IsMatch(w, @"[-].+")).ToList();
+            var allWords = Regex.Split(queryString, SplitRegex);
+            var orTerms = allWords.Where(w => Regex.IsMatch(w, OrRegex)).ToList();
+            var notTerms = allWords.Where(w => Regex.IsMatch(w, NotRegex)).ToList();
             var andTerms = allWords.Except(orTerms).Except(notTerms).ToList();
 
-            notWords = notTerms.Select(w => w.Trim('-')).ToArray();
-            orWords = orTerms.Select(w => w.Trim('+')).ToArray();
+            notWords = notTerms.Select(WordsTrimmer).ToArray();
+            orWords = orTerms.Select(WordsTrimmer).ToArray();
             andWords = andTerms.ToArray();
         }
 

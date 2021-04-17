@@ -8,12 +8,13 @@ namespace ConsoleApp
 {
     public class UserCallbacks : IUserCallbacks
     {
+        private string DefaultInSolutionAppSettingsPath = "../../../AppSettings.json";
         private AppSettings _appSettings;
         private IElasticClient _client;
 
         public string DefaultAppSettingsPath()
         {
-            return "../../../AppSettings.json";
+            return DefaultInSolutionAppSettingsPath;
         }
 
         public bool Init(string appSettingsPath)
