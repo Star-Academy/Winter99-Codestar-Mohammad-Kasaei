@@ -60,61 +60,68 @@ namespace ConsoleApp
             }
         }
 
-        public ImmutableList<Person> SearchPeople(string[] args)
+        public ImmutableList<Person> SearchPeople(IEnumerable<string> arguments)
         {
-            string NextArg(ref int i)
+            var searchInstructions = new Dictionary<string, Func<IEnumerable<string>, ImmutableList<Person>>>
             {
-                return args[i++];
-            }
+                {"all", (args) => _client.SearchAll()},
+                {
+                    "name_fuzzy", (args) =>
+                    {
+                        var phrase = args.First();
+                        var fuzziness = int.Parse(args.First());
+                        return _client.SearchNameFuzzy(phrase, fuzziness);
+                    }
+                },
+                {
+                    "eye_color_term", (args) =>
+                    {
+                        var phrase = args.First();
+                        return _client.SearchEyeColorTerm(phrase);
+                    }
+                },
+                {
+                    "eye_color_terms", (args) =>
+                    {
+                        var phrase = args.ToList();
+                        return _client.SearchEyeColorTerms(phrase);
+                    }
+                },
+                {
+                    "age_range", (args) =>
+                    {
+                        var min = int.Parse(args.First());
+                        var max = int.Parse(args.First());
+                        return _client.SearchAgeRange(min, max);
+                    }
+                },
+                {
+                    "distance", (args) =>
+                    {
+                        var lat = int.Parse(args.First());
+                        var lon = int.Parse(args.First());
+                        var distance = int.Parse(args.First());
+                        return _client.SearchLocationDistance(lat, lon, distance);
+                    }
+                },
+                {
+                    "full_text", (args) =>
+                    {
+                        var phrase = args.First();
+                        return _client.SearchFullTexts(phrase);
+                    }
+                },
+                {
+                    "name_age", (args) =>
+                    {
+                        var name = args.First();
+                        var age = int.Parse(args.First());
+                        return _client.SearchNameAndAge(name, age);
+                    }
+                }
+            };
 
-            var argPointer = 0;
-            switch (args[argPointer++])
-            {
-                case "all":
-                    return _client.SearchAll();
-                case "name_fuzzy":
-                {
-                    var phrase = NextArg(ref argPointer);
-                    var fuzziness = int.Parse(NextArg(ref argPointer));
-                    return _client.SearchNameFuzzy(phrase, fuzziness);
-                }
-                case "eye_color_term":
-                {
-                    var phrase = NextArg(ref argPointer);
-                    return _client.SearchEyeColorTerm(phrase);
-                }
-                case "eye_color_terms":
-                {
-                    var phrase = args.Skip(argPointer).ToList();
-                    return _client.SearchEyeColorTerms(phrase);
-                }
-                case "age_range":
-                {
-                    var min = int.Parse(NextArg(ref argPointer));
-                    var max = int.Parse(NextArg(ref argPointer));
-                    return _client.SearchAgeRange(min, max);
-                }
-                case "distance":
-                {
-                    var lat = int.Parse(NextArg(ref argPointer));
-                    var lon = int.Parse(NextArg(ref argPointer));
-                    var distance = int.Parse(NextArg(ref argPointer));
-                    return _client.SearchLocationDistance(lat, lon, distance);
-                }
-                case "full_text":
-                {
-                    var phrase = NextArg(ref argPointer);
-                    return _client.SearchFullTexts(phrase);
-                }
-                case "name_age":
-                {
-                    var name = NextArg(ref argPointer);
-                    var age = int.Parse(NextArg(ref argPointer));
-                    return _client.SearchNameAndAge(name, age);
-                }
-            }
-
-            return null;
+            return searchInstructions[arguments.First()]?.Invoke(arguments);
         }
 
         public IDictionary<int, long> AgeReport()

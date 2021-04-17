@@ -12,37 +12,14 @@ namespace ConsoleApp
 
         public override void Start()
         {
-            Console.WriteLine("Welcome you are using people nest client");
-            while (true)
-            {
-                var defaultAppSettingsPath = Callbacks.DefaultAppSettingsPath();
-                var useDefaultAppSettingsPath =
-                    AskYesNoQuestion($"Use Default AppSettings.json ({defaultAppSettingsPath}) ?");
-                var path = useDefaultAppSettingsPath
-                    ? defaultAppSettingsPath
-                    : AskStringQuestion("Enter AppSettings.json path");
-                if (Callbacks.Init(path))
-                {
-                    Console.WriteLine("App Settings loaded successfully");
-                    break;
-                }
+            Greeting();
+            LoadAppSettings();
+            SetupIndex();
+            RunCommands();
+        }
 
-                Console.WriteLine("Could not load settings file");
-            }
-
-            while (true)
-            {
-                var indexName = AskStringQuestion("Enter index name : ");
-                var create = AskYesNoQuestion("Create the index (y) or already exists(n) ? ");
-                if (Callbacks.IndexCreation(indexName, create))
-                {
-                    Console.WriteLine("Index OK");
-                    break;
-                }
-
-                Console.WriteLine("Could not create the index");
-            }
-
+        private void RunCommands()
+        {
             var isRunning = true;
             var menu = new Dictionary<string, Action>()
             {
@@ -110,6 +87,47 @@ namespace ConsoleApp
                     Console.WriteLine("invalid Command");
                 }
             }
+        }
+
+        private void SetupIndex()
+        {
+            while (true)
+            {
+                var indexName = AskStringQuestion("Enter index name : ");
+                var create = AskYesNoQuestion("Create the index (y) or already exists(n) ? ");
+                if (Callbacks.IndexCreation(indexName, create))
+                {
+                    Console.WriteLine("Index OK");
+                    break;
+                }
+
+                Console.WriteLine("Could not create the index");
+            }
+        }
+
+        private void LoadAppSettings()
+        {
+            while (true)
+            {
+                var defaultAppSettingsPath = Callbacks.DefaultAppSettingsPath();
+                var useDefaultAppSettingsPath =
+                    AskYesNoQuestion($"Use Default AppSettings.json ({defaultAppSettingsPath}) ?");
+                var path = useDefaultAppSettingsPath
+                    ? defaultAppSettingsPath
+                    : AskStringQuestion("Enter AppSettings.json path");
+                if (Callbacks.Init(path))
+                {
+                    Console.WriteLine("App Settings loaded successfully");
+                    break;
+                }
+
+                Console.WriteLine("Could not load settings file");
+            }
+        }
+
+        private static void Greeting()
+        {
+            Console.WriteLine("Welcome you are using people nest client");
         }
 
         private static bool AskYesNoQuestion(string question, string yesOption = "y", string noOption = "n")
