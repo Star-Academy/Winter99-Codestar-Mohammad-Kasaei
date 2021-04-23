@@ -11,6 +11,12 @@ namespace ConsoleApp
         private string DefaultInSolutionAppSettingsPath = "../../../AppSettings.json";
         private AppSettings _appSettings;
         private IElasticClient _client;
+        private readonly IQueryBuilder _queryBuilder;
+
+        public UserCallbacks()
+        {
+            _queryBuilder = new QueryBuilder();
+        }
 
         public string DefaultAppSettingsPath()
         {
@@ -78,7 +84,7 @@ namespace ConsoleApp
             IEnumerable<string> notWords
         )
         {
-            var query = QueryBuilder.WordsToNestQueryObject(andWords, orWords, notWords);
+            var query = _queryBuilder.WordsToNestQueryObject(andWords, orWords, notWords);
             return _client
                 .Search<Document>(query)
                 .Validate()

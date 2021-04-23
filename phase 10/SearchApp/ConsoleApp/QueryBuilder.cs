@@ -4,9 +4,9 @@ using Nest;
 
 namespace ConsoleApp
 {
-    public static class QueryBuilder
+    public class QueryBuilder : IQueryBuilder
     {
-        public static SearchRequest<Document> WordsToNestQueryObject(
+        public SearchRequest<Document> WordsToNestQueryObject(
             IEnumerable<string> andWords,
             IEnumerable<string> orWords,
             IEnumerable<string> notWords
