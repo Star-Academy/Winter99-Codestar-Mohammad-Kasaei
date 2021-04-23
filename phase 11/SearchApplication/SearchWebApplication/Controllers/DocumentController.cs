@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SearchWebApplication.Controllers
@@ -20,6 +21,8 @@ namespace SearchWebApplication.Controllers
         }
 
         [HttpGet("{index}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult Query([FromRoute] string index, [FromQuery] string query)
         {
             _apiQueryParser.SplitWordsToGroups(query, out var notWords, out var orWords, out var andWords);
@@ -33,6 +36,8 @@ namespace SearchWebApplication.Controllers
         }
 
         [HttpPost("{index}")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Index([FromRoute] string index, [FromBody] Document document)
         {
             try
@@ -48,6 +53,8 @@ namespace SearchWebApplication.Controllers
 
         [HttpGet]
         [Route("ping")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Ping()
         {
             return _queryEngine.CheckConnection()

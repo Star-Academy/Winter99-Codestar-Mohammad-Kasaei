@@ -11,7 +11,5 @@ namespace SearchWebApplication
             IEnumerable<string> orWords,
             IEnumerable<string> notWords
         );
-
-        IEnumerable<QueryContainer> WordListToQueryContainerList(IEnumerable<string> words);
     }
 }
