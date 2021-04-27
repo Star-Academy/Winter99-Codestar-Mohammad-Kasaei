@@ -9,6 +9,8 @@ namespace SearchWebApplication
 {
     public class Startup
     {
+        public const string CorsPolicy = "cors-policy";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +26,14 @@ namespace SearchWebApplication
             services.AddSingleton<IQueryEngine, QueryEngine>();
             services.AddSingleton<IQueryBuilder, QueryBuilder>();
             services.AddSingleton<IApiQueryParser, ApiQueryParser>();
+
+            services.AddCors(
+                options =>
+                {
+                    options.AddPolicy(CorsPolicy,
+                        builder => { builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader(); });
+                }
+            );
 
             services.AddSwaggerGen(c =>
             {
@@ -44,6 +54,8 @@ namespace SearchWebApplication
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(CorsPolicy);
 
             app.UseAuthorization();
 
