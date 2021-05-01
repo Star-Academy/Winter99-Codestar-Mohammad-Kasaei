@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace SearchWebApplication.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     public class DocumentController : Controller
     {
         private readonly IQueryEngine _queryEngine;
