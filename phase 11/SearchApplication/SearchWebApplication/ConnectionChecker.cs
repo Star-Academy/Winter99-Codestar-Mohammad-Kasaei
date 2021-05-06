@@ -9,12 +9,9 @@ namespace SearchWebApplication
     {
         private readonly ElasticClient _client;
 
-        public ConnectionChecker(IConfiguration configuration)
+        public ConnectionChecker(IHostConfigurationProvider configurationProvider)
         {
-            var host = configuration["host"];
-            var port = configuration["port"];
-            var uri = new Uri($"{host}:{port}");
-            var settings = new ConnectionSettings(uri);
+            var settings = new ConnectionSettings(configurationProvider.GetHostUrl());
             _client = new ElasticClient(settings);
         }
 

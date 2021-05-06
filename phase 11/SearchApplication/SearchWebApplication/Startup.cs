@@ -27,6 +27,7 @@ namespace SearchWebApplication
             services.AddSingleton<IQueryBuilder, QueryBuilder>();
             services.AddSingleton<IApiQueryParser, ApiQueryParser>();
             services.AddSingleton<IConnectionChecker, ConnectionChecker>();
+            services.AddSingleton<IHostConfigurationProvider, HostConfigurationProvider>();
 
             services.AddCors(
                 options =>

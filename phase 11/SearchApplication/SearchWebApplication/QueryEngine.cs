@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Extensions.Configuration;
+﻿using System.Collections.Generic;
 using Nest;
 using SearchWebApplication.validator;
 
@@ -10,12 +8,9 @@ namespace SearchWebApplication
     {
         private readonly ElasticClient _client;
 
-        public QueryEngine(IConfiguration configuration)
+        public QueryEngine(IHostConfigurationProvider configurationProvider)
         {
-            var host = configuration["host"];
-            var port = configuration["port"];
-            var uri = new Uri($"{host}:{port}");
-            var settings = new ConnectionSettings(uri);
+            var settings = new ConnectionSettings(configurationProvider.GetHostUrl());
             _client = new ElasticClient(settings);
         }
 
