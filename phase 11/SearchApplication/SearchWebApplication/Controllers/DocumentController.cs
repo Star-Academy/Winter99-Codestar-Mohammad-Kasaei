@@ -12,12 +12,15 @@ namespace SearchWebApplication.Controllers
         private readonly IQueryEngine _queryEngine;
         private readonly IQueryBuilder _queryBuilder;
         private readonly IApiQueryParser _apiQueryParser;
+        private readonly IConnectionChecker _connectionChecker;
 
-        public DocumentController(IQueryEngine queryEngine, IQueryBuilder queryBuilder, IApiQueryParser apiQueryParser)
+        public DocumentController(IQueryEngine queryEngine, IQueryBuilder queryBuilder, IApiQueryParser apiQueryParser,
+            IConnectionChecker connectionChecker)
         {
             _queryEngine = queryEngine;
             _queryBuilder = queryBuilder;
             _apiQueryParser = apiQueryParser;
+            _connectionChecker = connectionChecker;
         }
 
         [HttpGet("{index}")]
@@ -57,7 +60,7 @@ namespace SearchWebApplication.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult Ping()
         {
-            return _queryEngine.CheckConnection()
+            return _connectionChecker.CheckConnection()
                 ? Ok()
                 : StatusCode(500, "Elastic server is unavailable");
         }

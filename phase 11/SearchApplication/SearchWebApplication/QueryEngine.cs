@@ -35,19 +35,5 @@ namespace SearchWebApplication
                 )
                 .Validate();
         }
-
-        public bool CheckConnection()
-        {
-            try
-            {
-                _client.Ping().Validate();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                return false;
-            }
-        }
     }
 }

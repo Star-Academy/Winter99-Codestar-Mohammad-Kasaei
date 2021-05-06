@@ -7,7 +7,5 @@ namespace SearchWebApplication
     {
         IEnumerable<Document> GetDocsAdvancedQuery(SearchRequest<Document> searchRequest);
         IndexResponse Index(string index, Document document);
-
-        bool CheckConnection();
     }
 }
