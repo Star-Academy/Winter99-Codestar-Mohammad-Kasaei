@@ -1,0 +1,14 @@
+<div class="toolbar">
+  <app-toolbar-button [routerLinkActive]="'is-active'"
+                      [routerLink]="'./search'"
+                      [text]="'Search'">
+  </app-toolbar-button>
+  <app-toolbar-button [routerLinkActive]="'is-active'"
+                      [routerLink]="'./add'"
+                      [text]="'Add document'">
+  </app-toolbar-button>
+  <app-toolbar-button [routerLinkActive]="'is-active'"
+                      [text]="'Check ping'"
+                      (click)="onPingClicked()"
+  ></app-toolbar-button>
+</div>

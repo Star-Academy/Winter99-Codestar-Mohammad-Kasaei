@@ -1,0 +1,14 @@
+@import "src/styles";
+
+.title {
+  font-size: 5rem;
+  display: flex;
+  justify-content: center;
+  user-select: none;
+  color: $beige;
+  font-family: inherit;
+}
+
+.title:hover {
+  text-shadow: 10px 10px 150px rgba(255, 255, 255, 0.5);
+}

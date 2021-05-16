@@ -1,0 +1,23 @@
+@import "src/styles";
+
+.form {
+  padding: 20px 150px 100px;
+  background-color: $blue;
+  display: block;
+  justify-content: flex-end;
+}
+
+.inputs {
+  display: block;
+  width: 100%;
+}
+
+.inputs > * {
+  display: block;
+  width: 100%;
+  margin: 10px;
+}
+
+#addDocBtn{
+  float: right;
+}

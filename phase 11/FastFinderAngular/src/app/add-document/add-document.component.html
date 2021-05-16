@@ -1,0 +1,15 @@
+<div class="form">
+  <div class="inputs">
+    <app-input-box (textChanged)="docID = $event"
+                   id="docID"
+                   placeHolder="Document ID">
+
+    </app-input-box>
+    <app-input-box (textChanged)="docContent = $event"
+                   id="docContent"
+                   placeHolder="Document content">
+
+    </app-input-box>
+  </div>
+  <app-button (click)="onDocAddClicked()" id="addDocBtn" text="Add document"></app-button>
+</div>

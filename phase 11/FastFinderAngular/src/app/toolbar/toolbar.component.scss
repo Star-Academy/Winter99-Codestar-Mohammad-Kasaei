@@ -1,0 +1,9 @@
+@import "src/styles";
+
+.toolbar {
+  display: inline-block;
+  background: $darkBlue;
+  height: 40px;
+  width: calc(100% - 20px);
+  padding: 5px 10px 15px;
+}
