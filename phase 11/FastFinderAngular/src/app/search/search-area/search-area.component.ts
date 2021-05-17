@@ -1,4 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component} from '@angular/core';
+import {DocumentsService} from '../../services/documents.service';
 
 @Component({
   selector: 'app-search-area',
@@ -6,11 +7,10 @@ import {Component, EventEmitter, Output} from '@angular/core';
   styleUrls: ['./search-area.component.scss']
 })
 export class SearchAreaComponent {
-
-  @Output()
-  public searchRequested: EventEmitter<string> = new EventEmitter<string>();
+  public constructor(private documentsService: DocumentsService) {
+  }
 
   public onSearchBtnClicked(boxContent: string): void {
-    this.searchRequested.emit(boxContent);
+    this.documentsService.queryDocuments(boxContent);
   }
 }

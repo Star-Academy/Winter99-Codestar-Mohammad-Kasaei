@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {DocumentModel} from '../shared/Document.model';
 import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {Observable, Subject} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {UrlResolverService} from './url-resolver.service';
 import {ConfigurationService} from './configuration.service';
@@ -12,11 +12,17 @@ import {ConfigurationService} from './configuration.service';
 })
 export class DocumentsService {
   private readonly indexName: string;
+  private readonly documentsSubject: Subject<DocumentModel[]> = new Subject<DocumentModel[]>();
 
   public constructor(private configurationService: ConfigurationService,
                      private urlResolver: UrlResolverService,
                      private http: HttpClient) {
     this.indexName = configurationService.getIndexName();
+  }
+
+
+  public get documents(): Observable<DocumentModel[]> {
+    return this.documentsSubject;
   }
 
   public checkConnection(): Observable<boolean> {
@@ -30,8 +36,8 @@ export class DocumentsService {
       );
   }
 
-  public queryDocuments(queryString: string): Observable<DocumentModel[]> {
-    return this.http
+  public queryDocuments(queryString: string): void {
+    const requestObservable = this.http
       .get(this.urlResolver.getQueryWithParam(this.indexName, queryString), {responseType: 'json', observe: 'response'})
       .pipe(map(value => {
         if (value.status === 200) {
@@ -44,6 +50,11 @@ export class DocumentsService {
           return (docsRaw as DocumentModel[]);
         }
       ));
+    requestObservable.subscribe(value => {
+      this.documentsSubject.next(value);
+    }, () => {
+      this.documentsSubject.next([]);
+    });
   }
 
   public addDocument(documentModel: DocumentModel): Observable<HttpResponse<any>> {

@@ -1,21 +1,28 @@
-import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {DocumentModel} from '../../shared/Document.model';
+import {DocumentsService} from '../../services/documents.service';
 
 @Component({
   selector: 'app-results',
   templateUrl: './results.component.html',
   styleUrls: ['./results.component.scss']
 })
-export class ResultsComponent implements OnChanges {
-  @Input()
+export class ResultsComponent implements OnInit {
   public documentModels: DocumentModel[] = [];
-
-  @Input()
   public loadedData = false;
 
   public showCouldNotFindMessage = false;
 
-  public ngOnChanges(changes: SimpleChanges): void {
-    this.showCouldNotFindMessage = this.documentModels.length === 0 && this.loadedData;
+  public constructor(private documentsService: DocumentsService) {
+  }
+
+  public ngOnInit(): void {
+    this.documentsService
+      .documents
+      .subscribe(value => {
+        this.documentModels = value;
+        this.loadedData = true;
+        this.showCouldNotFindMessage = this.documentModels.length === 0 && this.loadedData;
+      });
   }
 }
