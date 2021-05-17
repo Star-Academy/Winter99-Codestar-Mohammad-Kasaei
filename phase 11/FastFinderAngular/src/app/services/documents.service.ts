@@ -30,7 +30,6 @@ export class DocumentsService {
     return this.http
       .get(this.urlResolver.getQueryWithParam(this.indexName, queryString), {responseType: 'json', observe: 'response'})
       .pipe(map(value => {
-        console.log('I am service and receiving the result');
         if (value.status === 200) {
           return value.body;
         } else {
