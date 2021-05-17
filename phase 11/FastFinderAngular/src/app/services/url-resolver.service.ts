@@ -1,10 +1,15 @@
 import {Injectable} from '@angular/core';
+import {ConfigurationService} from './configuration.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UrlResolverService {
-  private baseUrl = 'https://localhost:5001/api/v1/Document/';
+  private readonly baseUrl: string;
+
+  public constructor(private configurationService: ConfigurationService) {
+    this.baseUrl = this.configurationService.getBaseUrl();
+  }
 
   public getPing(): string {
     return `${this.baseUrl}ping`;

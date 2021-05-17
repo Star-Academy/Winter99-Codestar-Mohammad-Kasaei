@@ -4,15 +4,19 @@ import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 import {UrlResolverService} from './url-resolver.service';
+import {ConfigurationService} from './configuration.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentsService {
-  private indexName = 'search-app';
+  private readonly indexName: string;
 
-  public constructor(private urlResolver: UrlResolverService, private http: HttpClient) {
+  public constructor(private configurationService: ConfigurationService,
+                     private urlResolver: UrlResolverService,
+                     private http: HttpClient) {
+    this.indexName = configurationService.getIndexName();
   }
 
   public checkConnection(): Observable<boolean> {
