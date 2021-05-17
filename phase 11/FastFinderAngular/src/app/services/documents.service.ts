@@ -12,10 +12,10 @@ import {UrlResolverService} from './url-resolver.service';
 export class DocumentsService {
   private indexName = 'search-app';
 
-  constructor(private urlResolver: UrlResolverService, private http: HttpClient) {
+  public constructor(private urlResolver: UrlResolverService, private http: HttpClient) {
   }
 
-  checkConnection(): Observable<boolean> {
+  public checkConnection(): Observable<boolean> {
     return this.http
       .get(this.urlResolver.getPing(), {observe: 'response'})
       .pipe(
@@ -26,7 +26,7 @@ export class DocumentsService {
       );
   }
 
-  queryDocuments(queryString: string): Observable<DocumentModel[]> {
+  public queryDocuments(queryString: string): Observable<DocumentModel[]> {
     return this.http
       .get(this.urlResolver.getQueryWithParam(this.indexName, queryString), {responseType: 'json', observe: 'response'})
       .pipe(map(value => {
@@ -42,7 +42,7 @@ export class DocumentsService {
       ));
   }
 
-  addDocument(documentModel: DocumentModel): Observable<HttpResponse<any>> {
+  public addDocument(documentModel: DocumentModel): Observable<HttpResponse<any>> {
     return this.http
       .post(
         this.urlResolver.getAddDocument(this.indexName),

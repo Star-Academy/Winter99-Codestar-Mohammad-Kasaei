@@ -11,10 +11,10 @@ export class AddDocumentComponent {
   public docID: string;
   public docContent: string;
 
-  constructor(private documentsService: DocumentsService) {
+  public constructor(private documentsService: DocumentsService) {
   }
 
-  onDocAddClicked(): void {
+  public onDocAddClicked(): void {
     this.documentsService
       .addDocument(new DocumentModel(this.docID, this.docContent))
       .subscribe(value => this.onDocumentReceived(value),
@@ -22,12 +22,11 @@ export class AddDocumentComponent {
       );
   }
 
-  onDocumentReceived(event): void {
+  public onDocumentReceived(event): void {
     if (event.status === 201) {
       alert('Document created successfully');
     } else {
       alert('Error happened while adding the document');
     }
   }
-
 }

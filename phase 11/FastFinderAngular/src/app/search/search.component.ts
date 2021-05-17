@@ -14,10 +14,10 @@ export class SearchComponent {
 
   public loadedData = false;
 
-  constructor(private documentsService: DocumentsService) {
+  public constructor(private documentsService: DocumentsService) {
   }
 
-  onSearchRequested(query: string): void {
+  public onSearchRequested(query: string): void {
     this.documentsService
       .queryDocuments(query)
       .subscribe(value => {

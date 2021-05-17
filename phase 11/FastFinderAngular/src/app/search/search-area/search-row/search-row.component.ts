@@ -11,15 +11,15 @@ export class SearchRowComponent {
   public searchBtnClicked: EventEmitter<string> = new EventEmitter<string>();
   private boxContent: string;
 
-  onSearchBtnClicked(): void {
+  public onSearchBtnClicked(): void {
     this.searchBtnClicked.emit(this.boxContent);
   }
 
-  searchInputTextChanged(newValue): void {
+  public searchInputTextChanged(newValue): void {
     this.boxContent = newValue;
   }
 
-  onKeyPress(event: any): void {
+  public onKeyPress(event: any): void {
     if (event.key === 'Enter') {
       this.onSearchBtnClicked();
     }

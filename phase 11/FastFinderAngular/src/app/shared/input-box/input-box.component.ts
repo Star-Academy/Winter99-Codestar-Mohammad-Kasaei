@@ -8,12 +8,12 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class InputBoxComponent {
 
   @Output()
-  textChanged: EventEmitter<string> = new EventEmitter<string>();
-  inputContent: string;
+  public textChanged: EventEmitter<string> = new EventEmitter<string>();
+  public inputContent: string;
   @Input()
-  placeHolder: string;
+  public placeHolder: string;
 
-  onInputContentChanged(): void {
+  public onInputContentChanged(): void {
     this.textChanged.emit(this.inputContent);
   }
 }

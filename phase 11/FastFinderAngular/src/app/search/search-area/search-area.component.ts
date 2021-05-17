@@ -10,7 +10,7 @@ export class SearchAreaComponent {
   @Output()
   public searchRequested: EventEmitter<string> = new EventEmitter<string>();
 
-  onSearchBtnClicked(boxContent: string): void {
+  public onSearchBtnClicked(boxContent: string): void {
     this.searchRequested.emit(boxContent);
   }
 }

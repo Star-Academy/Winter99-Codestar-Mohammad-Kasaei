@@ -13,7 +13,7 @@ export class ResultsComponent {
   @Input()
   public loadedData = false;
 
-  showCouldNotFindMessage(): boolean {
+  public showCouldNotFindMessage(): boolean {
     return this.documentModels.length === 0 && this.loadedData;
   }
 }

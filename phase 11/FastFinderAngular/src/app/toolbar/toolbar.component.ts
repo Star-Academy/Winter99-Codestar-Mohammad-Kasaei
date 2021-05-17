@@ -8,10 +8,10 @@ import {DocumentsService} from '../services/documents.service';
 })
 export class ToolbarComponent {
 
-  constructor(private documentsService: DocumentsService) {
+  public constructor(private documentsService: DocumentsService) {
   }
 
-  onPingClicked(): void {
+  public onPingClicked(): void {
     this.documentsService
       .checkConnection()
       .subscribe(value => {
