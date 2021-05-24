@@ -1,0 +1,21 @@
+$darkBlue: #004E89;
+$blue: #1A659E;
+$highlightOrange: #FF6B35;
+$beige: #EFEFD0;
+$pewterBlue: #85AAB7;
+
+@font-face {
+  font-family: Comic;
+  src: url("assets/fonts/comic/comic.ttf") format("truetype");
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Comic, serif;
+}
+
+
+* {
+  font-family: inherit;
+}

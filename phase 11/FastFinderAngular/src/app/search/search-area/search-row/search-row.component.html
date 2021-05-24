@@ -1,0 +1,12 @@
+<div class="search-row">
+  <app-input-box
+    [placeHolder]="'You can search here with comma separated words (+,-,no sign)'"
+    (textChanged)="searchInputTextChanged($event)"
+    (keypress)="onKeyPress($event)"
+    id="search-input-box">
+  </app-input-box>
+  <app-search-icon
+    (click)="onSearchBtnClicked()"
+    id="search-icon">
+  </app-search-icon>
+</div>

@@ -1,0 +1,19 @@
+@import "src/styles";
+
+span {
+  display: inline-block;
+  cursor: pointer;
+  padding: 10px;
+  border: transparent solid 1px;
+  color: $highlightOrange;
+  border-radius: 50px;
+}
+
+span:hover {
+  border: $beige solid 1px;
+  transition: border 400ms;
+}
+
+:host(.is-active) span {
+  border-bottom: #EFEFD0 solid 2px;
+}

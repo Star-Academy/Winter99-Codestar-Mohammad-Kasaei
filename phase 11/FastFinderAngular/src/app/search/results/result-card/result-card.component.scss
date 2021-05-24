@@ -1,0 +1,45 @@
+@import "src/styles";
+
+* {
+  font-family: Comic, sans-serif;
+}
+
+.card {
+  display: inline-block;
+  background-color: #ffffff;
+  width: 250px;
+  height: 400px;
+  border: #00000011 solid 1px;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 20px;
+  float: left;
+  color: black;
+}
+
+.card:hover {
+  box-shadow: 0 10px 20px 0 rgba(256, 256, 256, 0.5), 0 6px 20px 0 rgba(256, 256, 256, 0.4);
+  transition: all 150ms;
+}
+
+.card > .header {
+  display: inline-block;
+  width: calc(100% - 16px);
+  height: 40px;
+  font-weight: 900;
+  padding: 8px;
+  font-size: 30px;
+  user-select: none;
+}
+
+.card > .details {
+  display: inline-block;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 20px;
+  height: calc(100% - 20px - 40px - 10px - 40px);
+  width: calc(100% - 20px - 40px);
+  background-color: $pewterBlue;
+  overflow: hidden;
+  word-wrap: break-word;
+}

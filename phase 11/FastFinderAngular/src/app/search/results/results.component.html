@@ -1,0 +1,6 @@
+<div class="results">
+  <app-result-card *ngFor="let doc of documentModels" [document]="doc"></app-result-card>
+  <div *ngIf="showCouldNotFindMessage">
+    Could not find any document :(
+  </div>
+</div>

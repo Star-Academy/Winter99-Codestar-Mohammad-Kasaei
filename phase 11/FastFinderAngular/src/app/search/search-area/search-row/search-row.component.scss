@@ -1,0 +1,23 @@
+.search-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-row > * {
+  height: 60px;
+}
+
+.search-row > *:not(:first-child) {
+  padding-left: 5px;
+}
+
+.search-row > *:not(:last-child) {
+  padding-right: 5px;
+}
+
+#search-input-box {
+  width: 500px;
+}
+
+

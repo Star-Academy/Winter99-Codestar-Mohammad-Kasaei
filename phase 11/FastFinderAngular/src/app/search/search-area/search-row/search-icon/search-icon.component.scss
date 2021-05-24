@@ -1,0 +1,19 @@
+@import "src/styles";
+
+#button {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: 400ms;
+}
+
+#button {
+  border: transparent solid 1px;
+  border-radius: 10px;
+}
+
+#button:hover {
+  border: $beige solid 1px;
+  border-radius: 10px;
+  transform: rotate(90deg);
+}

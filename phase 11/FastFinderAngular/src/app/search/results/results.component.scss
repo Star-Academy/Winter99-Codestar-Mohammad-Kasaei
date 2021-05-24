@@ -1,0 +1,13 @@
+@import "src/styles";
+
+.results {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  justify-items: center;
+  justify-content: center;
+  background-color: $darkBlue;
+  margin: 0;
+  padding: 10px 150px;
+  color: $beige;
+  width: calc(100% - 2 * 150px);
+}
