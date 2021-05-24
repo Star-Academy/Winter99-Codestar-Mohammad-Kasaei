@@ -1,0 +1,171 @@
+@font-face {
+    font-family: Comic;
+    src: url("assets/fonts/comic/comic.ttf");
+}
+
+body {
+    background-color: #1A659E;
+    font-family: Comic, serif;
+    padding: 0;
+    margin: 0;
+}
+
+input, select, textarea, button {
+    font-family: inherit;
+}
+
+.header-area {
+    background-color: #1A659E;
+    color: #EFEFD0;
+    padding-bottom: 25px;
+}
+
+.top-bar {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px;
+}
+
+.top-bar > .item {
+    cursor: pointer;
+    padding: 10px;
+    border: transparent solid 1px;
+    color: #FF6B35;
+}
+
+.top-bar > .item:hover {
+    border-radius: 10px;
+    border: #EFEFD0 solid 1px;
+    transition: border 400ms;
+}
+
+.header-area > .title {
+    font-size: 5rem;
+    display: flex;
+    justify-content: center;
+    user-select: none;
+}
+
+.header-area:hover > .title {
+    text-shadow: 10px 10px 150px rgba(255, 255, 255, 0.5);
+}
+
+.header-area > .search-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#search-icon {
+    width: 30px;
+    height: auto;
+}
+
+.button {
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    transition: 400ms;
+}
+
+#search-input-box {
+    width: 400px;
+    height: 40px;
+}
+
+input {
+    padding: 5px 15px;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1.2rem;
+}
+
+input:focus, input:hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+}
+
+.button:hover {
+    border: #EFEFD0 solid 1px;
+    border-radius: 10px;
+}
+
+#search-icon:hover {
+    transform: rotate(90deg) scale(1.2, 1.2);
+    border: #EFEFD0 solid 1px;
+    border-radius: 10px;
+}
+
+.content {
+    background-color: #004E89;
+    padding: 10px 150px;
+    color: #EFEFD0;
+}
+
+.results {
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
+
+.result-empty {
+    color: #EFEFD0;
+    text-align: center;
+    font-size: 30px;
+    user-select: none;
+}
+
+.results > .result-card {
+    display: inline-block;
+    background-color: #ffffff;
+    width: 250px;
+    height: 400px;
+    border: #00000011 solid 1px;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 20px;
+    float: left;
+    color: black;
+}
+
+.results > .result-card:hover {
+    box-shadow: 0 10px 20px 0 rgba(256, 256, 256, 0.5), 0 6px 20px 0 rgba(256, 256, 256, 0.4);
+    transition: all 150ms;
+}
+
+.results > .result-card > .card-header {
+    display: inline-block;
+    width: calc(100% - 16px);
+    height: 40px;
+    font-weight: 900;
+    padding: 8px;
+    font-size: 30px;
+    user-select: none;
+}
+
+.results > .result-card > .card-details {
+    display: inline-block;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 20px;
+    height: calc(100% - 20px - 40px - 10px - 40px);
+    width: calc(100% - 20px - 40px);
+    background-color: lightgreen;
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
+
+/* For add document */
+
+#input-document-id {
+    width: calc(100% - 39px);
+}
+
+#input-document-content {
+    width: calc(100% - 39px);
+    height: 150px;
+}
+
+#btn-add-document {
+    float: right;
+}

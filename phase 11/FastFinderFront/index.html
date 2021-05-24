@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./styles.css">
+    <script src="scripts.js"></script>
+    <title>Fast Finder</title>
+</head>
+<body onload="onLoad()">
+<div class="header-area">
+    <div class="top-bar">
+        <span id="btn-add-document" class="item">Add document</span>
+        <span id="btn-check-ping" class="item">Check ping</span>
+    </div>
+    <h1 class="title">Fast Finder</h1>
+    <div class="search-area">
+        <input type="text" id="search-input-box" placeholder="search with me faster than ever">
+        <img class="button" src="./assets/search.svg" alt="" id="search-icon">
+    </div>
+</div>
+<div class="content">
+    <div class="result-empty" style="display: none">
+        Nothing found for your query :(
+    </div>
+    <div class="results"></div>
+</div>
+</body>
+</html>
